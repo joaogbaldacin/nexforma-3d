@@ -62,7 +62,7 @@ const solutions = [
 ]
 
 const getWhatsAppLink = (message) => {
-  return `https://wa.me/5514999999999?text=${encodeURIComponent(message)}`
+  return `https://wa.me/5519989690055?text=${encodeURIComponent(message)}`
 }
 </script>
 

@@ -48,7 +48,7 @@ const handleSendWhatsApp = () => {
   }
   message += `\nEnvio para meu CEP. Poderiam me passar os prazos e valores?`
 
-  const url = `https://wa.me/5514999999999?text=${encodeURIComponent(message)}`
+  const url = `https://wa.me/5519989690055?text=${encodeURIComponent(message)}`
   window.open(url, '_blank')
   emit('close')
 }

@@ -30,7 +30,7 @@ const emit = defineEmits(['close'])
 const handleOrderWhatsApp = () => {
   if (!props.product) return
   const text = `Olá! Estive visualizando as especificações do modelo "${props.product.name}" no catálogo da NexForma.3D e gostaria de encomendar o meu sob medida! Poderiam me passar os detalhes de prazos e valores?`
-  window.open(`https://wa.me/5514999999999?text=${encodeURIComponent(text)}`, '_blank')
+  window.open(`https://wa.me/5519989690055?text=${encodeURIComponent(text)}`, '_blank')
 }
 
 // Close on escape key
