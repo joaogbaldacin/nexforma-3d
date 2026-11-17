@@ -16,7 +16,7 @@ import {
 
 const emit = defineEmits(['open-quote'])
 
-const WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Gostaria de fazer um orçamento com a NexForma.3D para um projeto de impressão 3D!")
+const WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
 
 // Animated telemetry simulation
 const currentLayer = ref(184)

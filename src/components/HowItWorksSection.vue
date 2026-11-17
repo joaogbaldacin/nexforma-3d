@@ -133,14 +133,15 @@ const guarantees = [
           <span class="text-xs sm:text-sm text-[#F3F4F6] px-2 sm:px-4 font-medium text-center sm:text-left">
             Pronto para iniciar seu projeto ou tirar dúvidas técnicas?
           </span>
-          <button 
-            type="button"
-            @click="emit('open-quote')"
+          <a 
+            :href="'https://wa.me/5519989690055?text=' + encodeURIComponent('Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.')"
+            target="_blank"
+            rel="noopener noreferrer"
             class="w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-[#00E5FF] text-[#0B0D10] font-bold text-xs sm:text-sm hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"
           >
             <span>Fazer Orçamento Agora</span>
             <ArrowRight class="w-4 h-4 shrink-0" />
-          </button>
+          </a>
         </div>
       </div>
 

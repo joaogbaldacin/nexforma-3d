@@ -30,6 +30,8 @@ onUnmounted(() => {
 const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
+
+const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
 </script>
 
 <template>
@@ -76,16 +78,17 @@ const closeMobileMenu = () => {
             <Instagram class="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
           </a>
 
-          <!-- CTA Button -->
-          <button 
-            type="button"
-            @click="emit('open-quote')"
+          <!-- CTA Button (WhatsApp Direct) -->
+          <a 
+            :href="GENERAL_WHATSAPP_URL"
+            target="_blank" 
+            rel="noopener noreferrer"
             class="relative group overflow-hidden rounded-xl px-5 py-2.5 text-sm font-semibold text-[#0B0D10] bg-[#00E5FF] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] active:scale-95 cursor-pointer flex items-center gap-2 min-h-[42px]"
           >
             <span class="absolute inset-0 w-full h-full bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
             <MessageSquare class="w-4 h-4 fill-current" />
             <span>Pedir Orçamento</span>
-          </button>
+          </a>
         </div>
 
         <!-- Mobile Controls (Clean, Compact, No Overlap) -->
@@ -102,15 +105,16 @@ const closeMobileMenu = () => {
             <Instagram class="w-4 h-4" />
           </a>
 
-          <!-- Quick Quote Button -->
-          <button 
-            type="button"
-            @click="emit('open-quote')"
+          <!-- Quick Quote Button (WhatsApp Direct) -->
+          <a 
+            :href="GENERAL_WHATSAPP_URL"
+            target="_blank" 
+            rel="noopener noreferrer"
             class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#00E5FF] text-[#0B0D10] flex items-center gap-1 active:scale-95 cursor-pointer shrink-0 min-h-[36px]"
           >
             <MessageSquare class="w-3.5 h-3.5 fill-current" />
             <span class="hidden xs:inline sm:inline">Orçamento</span>
-          </button>
+          </a>
 
           <!-- Hamburger Menu Toggle Button -->
           <button 
@@ -164,14 +168,16 @@ const closeMobileMenu = () => {
             <span class="font-['Space_Grotesk'] font-medium">Instagram @nexforma.3d</span>
           </a>
 
-          <button 
-            type="button"
-            @click="() => { closeMobileMenu(); emit('open-quote'); }"
+          <a 
+            :href="GENERAL_WHATSAPP_URL"
+            target="_blank" 
+            rel="noopener noreferrer"
+            @click="closeMobileMenu"
             class="w-full py-3.5 rounded-xl bg-[#00E5FF] text-[#0B0D10] font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,229,255,0.4)] cursor-pointer active:scale-98 min-h-[48px]"
           >
             <MessageSquare class="w-4 h-4 fill-current" />
             <span>Pedir Orçamento no WhatsApp</span>
-          </button>
+          </a>
         </div>
       </div>
     </transition>

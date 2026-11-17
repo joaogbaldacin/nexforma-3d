@@ -19,7 +19,7 @@ const closeQuote = () => {
   isQuoteModalOpen.value = false
 }
 
-const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Gostaria de conversar com a equipe da NexForma.3D sobre um projeto de impressão 3D.")
+const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
 </script>
 
 <template>

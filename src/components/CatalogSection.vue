@@ -253,7 +253,7 @@ const filteredProducts = computed(() => {
 })
 
 const getOrderLink = (productName) => {
-  const text = `Olá! Me encantei pelo produto "${productName}" no catálogo da NexForma.3D e gostaria de encomendar o meu sob medida! Poderiam me passar os detalhes de cores e envio?`
+  const text = `Olá! Vi o produto ${productName} no site da NexForma.3D e gostaria de tirar dúvidas / fazer um orçamento.`
   return `https://wa.me/5519989690055?text=${encodeURIComponent(text)}`
 }
 </script>
@@ -655,7 +655,7 @@ const getOrderLink = (productName) => {
         </div>
 
         <a 
-          :href="'https://wa.me/5519989690055?text=' + encodeURIComponent('Olá equipe da NexForma.3D! Gostaria de conversar sobre uma peça personalizada sob medida.')"
+          :href="'https://wa.me/5519989690055?text=' + encodeURIComponent('Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.')"
           target="_blank"
           rel="noopener noreferrer"
           class="w-full md:w-auto shrink-0 px-6 py-3.5 rounded-xl bg-[#151921] hover:bg-[#00E5FF] border border-[#00E5FF]/50 text-[#F3F4F6] hover:text-[#0B0D10] font-bold text-xs sm:text-sm transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] min-h-[48px] text-center"

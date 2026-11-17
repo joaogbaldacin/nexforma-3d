@@ -27,12 +27,6 @@ const props = defineProps({
 
 const emit = defineEmits(['close'])
 
-const handleOrderWhatsApp = () => {
-  if (!props.product) return
-  const text = `Olá! Estive visualizando as especificações do modelo "${props.product.name}" no catálogo da NexForma.3D e gostaria de encomendar o meu sob medida! Poderiam me passar os detalhes de prazos e valores?`
-  window.open(`https://wa.me/5519989690055?text=${encodeURIComponent(text)}`, '_blank')
-}
-
 // Close on escape key
 const handleKeyDown = (e) => {
   if (e.key === 'Escape' && props.isOpen) {
@@ -215,14 +209,15 @@ watch(() => props.isOpen, (newVal) => {
               </span>
             </div>
 
-            <button 
-              type="button"
-              @click="handleOrderWhatsApp"
+            <a 
+              :href="`https://wa.me/5519989690055?text=${encodeURIComponent('Olá! Vi o produto ' + product.name + ' no site da NexForma.3D e gostaria de tirar dúvidas / fazer um orçamento.')}`"
+              target="_blank"
+              rel="noopener noreferrer"
               class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#00E5FF] hover:bg-[#33EBFF] text-[#0B0D10] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(0,229,255,0.4)] hover:shadow-[0_4px_30px_rgba(0,229,255,0.7)] transition-all cursor-pointer active:scale-95 min-h-[48px]"
             >
               <MessageSquare class="w-4 h-4 fill-current shrink-0" />
               <span>Encomendar este modelo no WhatsApp 💬</span>
-            </button>
+            </a>
           </div>
 
         </div>
