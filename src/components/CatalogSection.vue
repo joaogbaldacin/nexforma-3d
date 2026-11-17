@@ -27,9 +27,9 @@ const closeSpecs = () => {
 const categories = [
   { id: 'todos', label: 'Todos os Produtos' },
   { id: 'decoracao', label: 'Decoração' },
-  { id: 'presentes', label: 'Presentes & Afeto' },
+  { id: 'presentes', label: 'Presentes & Colecionáveis' },
   { id: 'tecnicas', label: 'Peças Técnicas' },
-  { id: 'setup', label: 'Setup & Organização' },
+  { id: 'setup', label: 'Setup & Utilidades' },
 ]
 
 const products = [
@@ -58,7 +58,7 @@ const products = [
     id: 2,
     name: 'Luminária Lunar Moonlit 3D',
     category: 'presentes',
-    categoryLabel: 'Presentes & Afeto',
+    categoryLabel: 'Presentes & Colecionáveis',
     badge: 'Mais Desejada',
     description: 'A serenidade da lua no seu quarto. Textura em relevo real dos mares e crateras lunares com luz suave e aconchegante sobre base de madeira maciça.',
     highlight: 'LED suave bivolt com toque suave',
@@ -79,7 +79,7 @@ const products = [
     id: 3,
     name: 'Suporte Minimalista para Headphone',
     category: 'setup',
-    categoryLabel: 'Setup & Organização',
+    categoryLabel: 'Setup & Utilidades',
     badge: 'Elegância & Ergonomia',
     description: 'Linhas curvas contínuas que abraçam a headband do seu fone sem marcar a espuma. Deixa sua mesa visualmente limpa, organizada e moderna.',
     highlight: 'Canaleta oculta para cabo',
@@ -100,7 +100,7 @@ const products = [
     id: 4,
     name: 'Kit Organizador Hexagonal de Mesa',
     category: 'setup',
-    categoryLabel: 'Setup & Organização',
+    categoryLabel: 'Setup & Utilidades',
     badge: 'Modular & Magnético',
     description: 'Conjunto de 3 módulos que se conectam suavemente por imãs internos. O equilíbrio perfeito entre harmonia visual e funcionalidade no dia a dia.',
     highlight: 'Encaixe magnético sutil',
@@ -157,6 +157,90 @@ const products = [
       materialAndFinish: 'Nylon com Fibra de Carbono (PA-CF) / PETG Reforçado / ABS Industrial',
       colors: ['Preto Carbono Texturizado', 'Natural / Branco Técnico', 'Cinza Mecânico'],
       notes: 'Projetada para tolerâncias mecânicas rigorosas de ±0.05 mm e resistência térmica contínua até 140°C. Envie seu arquivo STL/STEP ou peça física para reprodução.'
+    }
+  },
+  {
+    id: 7,
+    name: 'Placa Decorativa Letreiro 3D Personalizado',
+    category: 'presentes',
+    categoryLabel: 'Presentes & Colecionáveis',
+    badge: 'Feito sob medida',
+    description: 'Nome, logotipo ou frase especial esculpida em relevo tridimensional. Ideal para presentear alguém especial, decorar quartos ou destacar a identidade da sua mesa de trabalho.',
+    highlight: 'Relevo 3D de alta definição',
+    materialHighlight: 'PLA Premium Bicolor',
+    leadTimeBadge: 'Pronto em até 48h',
+    pricePrefix: 'A partir de',
+    priceValue: 'R$ 89,00',
+    svgType: 'signboard',
+    specs: {
+      dimensions: '25cm Largura x 8cm Altura x 2,5cm Profundidade (varia conforme o nome)',
+      weight: '140g',
+      materialAndFinish: 'PLA Premium Bicolor / Acabamento Acetinado (alta fidelidade e contraste visual)',
+      colors: ['Preto com Ciano Neon', 'Branco com Dourado', 'Cinza Chumbo', 'Cores sob consulta'],
+      notes: 'Personalização total de fonte, texto ou logotipo antes da produção. Enviamos prévia digital 3D para aprovação antes da impressão.'
+    }
+  },
+  {
+    id: 8,
+    name: 'Engrenagem & Componente Mecânico Sob Medida',
+    category: 'tecnicas',
+    categoryLabel: 'Peças Técnicas',
+    badge: 'Alta precisão milimétrica',
+    description: 'Reconstrução e impressão de peças de reposição, engrenagens, suportes estruturais e protótipos funcionais de alta resistência mecânica e térmica.',
+    highlight: 'Tolerância milimétrica rigorosa',
+    materialHighlight: 'PETG / ABS / Nylon Reforçado',
+    leadTimeBadge: 'Produção em 24h a 48h',
+    pricePrefix: 'Investimento',
+    priceValue: 'Sob Medida',
+    svgType: 'mechanical',
+    specs: {
+      dimensions: 'Conforme projeto técnico ou peça original enviada',
+      weight: 'Variável conforme preenchimento (Infill de 40% a 100%)',
+      materialAndFinish: 'PETG Industrial / ABS / Nylon Reforçado (alta resistência a tração, impacto e temperatura)',
+      colors: ['Preto Técnico', 'Cinza Industrial', 'Branco'],
+      notes: 'Envie foto com medidas ou arquivo STL/STEP pelo WhatsApp para avaliação técnica e cálculo estrutural.'
+    }
+  },
+  {
+    id: 9,
+    name: 'Organizador Modular de Mesa & Cabos',
+    category: 'setup',
+    categoryLabel: 'Setup & Utilidades',
+    badge: 'Design funcional',
+    description: 'Sistema inteligente com compartimentos para cartões SD, pendrives, canetas e canaletas ocultas para manter seu setup sempre limpo, organizado e produtivo.',
+    highlight: 'Gestão integrada de cabos',
+    materialHighlight: 'PLA Matte Fosco Antirrisco',
+    leadTimeBadge: 'Pronto em até 24h',
+    pricePrefix: 'A partir de',
+    priceValue: 'R$ 59,00',
+    svgType: 'cable-organizer',
+    specs: {
+      dimensions: '18cm Largura x 10cm Profundidade x 6cm Altura',
+      weight: '165g',
+      materialAndFinish: 'PLA Matte Fosco Antirrisco (toque aveludado resistente a marcas de dedos)',
+      colors: ['Preto Fosco', 'Grafite', 'Branco Minimalista'],
+      notes: 'Base com encaixe para pés antiderrapantes; módulos expansíveis com trilhos magnéticos.'
+    }
+  },
+  {
+    id: 10,
+    name: 'Escultura Geométrica Low-Poly Minimalista',
+    category: 'decoracao',
+    categoryLabel: 'Decoração & Design',
+    badge: 'Acabamento artístico',
+    description: 'Peça artística facetada com estética contemporânea que cria jogos únicos de luz e sombra em estantes, escritórios ou salas de estar.',
+    highlight: 'Facetas angulares esculturais',
+    materialHighlight: 'PLA Silk Metálico / Velvet Fosco',
+    leadTimeBadge: 'Pronto em até 48h',
+    pricePrefix: 'A partir de',
+    priceValue: 'R$ 95,00',
+    svgType: 'lowpoly',
+    specs: {
+      dimensions: '20cm Altura x 13cm Largura x 15cm Profundidade',
+      weight: '210g',
+      materialAndFinish: 'PLA Silk Metálico / Velvet Fosco (brilho sedoso com reflexão de estúdio)',
+      colors: ['Preto Ônix', 'Prata Metálico', 'Cobre', 'Branco Gelo'],
+      notes: 'Disponível em diversos temas (animais geométricos, bustos ou formas abstratas sob medida).'
     }
   }
 ]
@@ -353,8 +437,8 @@ const getOrderLink = (productName) => {
                 <line x1="45" y1="145" x2="155" y2="45" stroke="#00E5FF" stroke-width="4" opacity="0.4" stroke-linecap="round" />
               </svg>
 
-              <!-- 6. Engrenagem & Peça de Engenharia -->
-              <svg v-else viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:rotate-12">
+              <!-- 6. Engrenagem & Peça Técnica de Engenharia -->
+              <svg v-else-if="product.svgType === 'gear'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:rotate-12">
                 <defs>
                   <linearGradient id="gear-metal" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#334155"/>
@@ -378,6 +462,92 @@ const getOrderLink = (productName) => {
                 <circle cx="100" cy="100" r="30" fill="#0B0F16" stroke="#00E5FF" stroke-width="1.5" />
                 <circle cx="100" cy="100" r="16" fill="#1E293B" />
                 <rect x="96" y="80" width="8" height="12" rx="2" fill="#00E5FF" />
+              </svg>
+
+              <!-- 7. Placa Decorativa Letreiro 3D Personalizado -->
+              <svg v-else-if="product.svgType === 'signboard'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+                <!-- Stand Base -->
+                <polygon points="35,145 165,145 155,160 45,160" fill="#101722" stroke="#253245" stroke-width="1.5" />
+                <!-- Slanted Signboard Body -->
+                <polygon points="30,65 170,65 160,145 40,145" fill="#16202D" stroke="#2A384D" stroke-width="2" />
+                <polygon points="34,70 166,70 157,140 43,140" fill="#0E141D" />
+                <!-- Cyan Border Accent Line -->
+                <line x1="36" y1="72" x2="164" y2="72" stroke="#00E5FF" stroke-width="2" />
+                <!-- Extruded 3D Text Simulation (NEX.3D in isometric bevels) -->
+                <!-- Letter N -->
+                <path d="M52 120 L52 85 L60 85 L72 110 L72 85 L79 85 L79 120 L71 120 L59 95 L59 120 Z" fill="#00E5FF" filter="drop-shadow(0 0 4px rgba(0,229,255,0.4))" />
+                <!-- Letter E -->
+                <path d="M85 120 L85 85 L105 85 L105 91 L92 91 L92 99 L103 99 L103 105 L92 105 L92 114 L106 114 L106 120 Z" fill="#00E5FF" filter="drop-shadow(0 0 4px rgba(0,229,255,0.4))" />
+                <!-- Letter X -->
+                <path d="M112 120 L121 103 L113 85 L121 85 L126 96 L131 85 L139 85 L131 103 L140 120 L132 120 L126 109 L120 120 Z" fill="#00E5FF" filter="drop-shadow(0 0 4px rgba(0,229,255,0.4))" />
+                <!-- 3D Dot Accent -->
+                <circle cx="147" cy="116" r="3.5" fill="#00E5FF" />
+              </svg>
+
+              <!-- 8. Engrenagem & Componente Mecânico Sob Medida -->
+              <svg v-else-if="product.svgType === 'mechanical'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+                <!-- Pillow block mounting base -->
+                <path d="M35 130 L165 130 C165 130 165 155 155 158 L45 158 C35 155 35 130 35 130 Z" fill="#182332" stroke="#2B3C52" stroke-width="2" />
+                <!-- Base Bolt Holes -->
+                <ellipse cx="50" cy="144" rx="5" ry="3" fill="#090E15" stroke="#00E5FF" stroke-width="1.2" />
+                <ellipse cx="150" cy="144" rx="5" ry="3" fill="#090E15" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- Bearing Arch / Housing -->
+                <path d="M60 130 C60 70 140 70 140 130 Z" fill="#1C2738" stroke="#2E4057" stroke-width="2" />
+                <!-- Bevel Gear Hub / Center Bore -->
+                <circle cx="100" cy="100" r="34" fill="#101722" stroke="#00E5FF" stroke-width="2" />
+                <circle cx="100" cy="100" r="18" fill="#1C2738" stroke="#00E5FF" stroke-width="1.5" stroke-dasharray="3 2" />
+                <circle cx="100" cy="100" r="8" fill="#090E15" />
+                <!-- Keyway Slot -->
+                <rect x="97" y="88" width="6" height="8" fill="#00E5FF" />
+                <!-- Engineering Tolerance Marks -->
+                <line x1="66" y1="48" x2="134" y2="48" stroke="#00E5FF" stroke-width="1" stroke-dasharray="2 2" />
+                <line x1="66" y1="44" x2="66" y2="52" stroke="#00E5FF" stroke-width="1" />
+                <line x1="134" y1="44" x2="134" y2="52" stroke="#00E5FF" stroke-width="1" />
+              </svg>
+
+              <!-- 9. Organizador Modular de Mesa & Cabos -->
+              <svg v-else-if="product.svgType === 'cable-organizer'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+                <!-- Main Organizer Body in 3D Isometric View -->
+                <polygon points="100,50 170,85 170,125 100,160 30,125 30,85" fill="#192230" stroke="#2A394E" stroke-width="2" />
+                <polygon points="100,53 166,86 100,119 34,86" fill="#141B26" />
+                <!-- Pen & Accessory Slots -->
+                <ellipse cx="65" cy="85" rx="8" ry="5" fill="#0A0E15" stroke="#00E5FF" stroke-width="1.2" />
+                <ellipse cx="85" cy="75" rx="8" ry="5" fill="#0A0E15" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- SD Card / Flash Drive Slots -->
+                <rect x="110" y="70" width="16" height="3" transform="rotate(25 110 70)" fill="#00E5FF" />
+                <rect x="125" y="77" width="16" height="3" transform="rotate(25 125 77)" fill="#00E5FF" />
+                <rect x="140" y="84" width="16" height="3" transform="rotate(25 140 84)" fill="#00E5FF" />
+                <!-- Integrated Cable Routing Channels (glowing cyan curves) -->
+                <path d="M40 105 Q100 135 160 105" fill="none" stroke="#253447" stroke-width="6" stroke-linecap="round" />
+                <path d="M40 105 Q100 135 160 105" fill="none" stroke="#00E5FF" stroke-width="2" stroke-linecap="round" />
+                <circle cx="100" cy="120" r="3" fill="#FFFFFF" />
+              </svg>
+
+              <!-- 10. Escultura Geométrica Low-Poly Minimalista -->
+              <svg v-else viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_12px_28px_rgba(0,229,255,0.25)] transition-transform duration-500 group-hover:scale-108">
+                <!-- Pedestal Shadow -->
+                <ellipse cx="100" cy="155" rx="42" ry="8" fill="#0A0E14" />
+                <!-- Low-Poly Faceted Sculpture (Geometric Diamond Beast / Polyhedron) -->
+                <!-- Center Triangle -->
+                <polygon points="100,45 130,95 70,95" fill="#29374B" stroke="#00E5FF" stroke-width="1.5" />
+                <!-- Top Left Facet -->
+                <polygon points="100,45 70,95 45,75" fill="#1C2737" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- Top Right Facet -->
+                <polygon points="100,45 130,95 155,75" fill="#364963" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- Mid Left Facet -->
+                <polygon points="70,95 45,75 50,125" fill="#151D2A" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- Mid Right Facet -->
+                <polygon points="130,95 155,75 150,125" fill="#2E3F57" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- Lower Center Left -->
+                <polygon points="100,145 70,95 100,115" fill="#1B2533" stroke="#00E5FF" stroke-width="1.5" />
+                <!-- Lower Center Right -->
+                <polygon points="100,145 130,95 100,115" fill="#253347" stroke="#00E5FF" stroke-width="1.5" />
+                <!-- Lower Left Outer -->
+                <polygon points="100,145 70,95 50,125" fill="#111722" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- Lower Right Outer -->
+                <polygon points="100,145 130,95 150,125" fill="#3D516E" stroke="#00E5FF" stroke-width="1.2" />
+                <!-- Glowing Crest Vertex -->
+                <circle cx="100" cy="45" r="2.5" fill="#00E5FF" />
               </svg>
 
               <!-- Top Left: Humanized Badge (Feito sob medida / Design autoral) -->
