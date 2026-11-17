@@ -1,0 +1,24 @@
+{
+  "name": "nexforma-3d",
+  "private": true,
+  "version": "1.0.0",
+  "description": "NexForma.3D - Fabricação Digital & Impressão 3D Sob Medida",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-vue-next": "^1.0.0",
+    "vue": "^3.5.45"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "@vitejs/plugin-vue": "^6.0.11",
+    "autoprefixer": "^10.6.2",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^4.3.5",
+    "vite": "^8.3.8"
+  }
+}
