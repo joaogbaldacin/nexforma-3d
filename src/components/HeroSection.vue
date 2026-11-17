@@ -53,35 +53,36 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section id="hero" class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden build-plate-iso">
+  <section id="hero" class="relative pt-24 pb-14 sm:pt-32 sm:pb-20 md:pt-40 md:pb-28 overflow-hidden build-plate-iso">
     
     <!-- Ambient Neon Glow Accents in Background -->
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-[#00E5FF]/10 blur-[130px] rounded-full pointer-events-none -z-10"></div>
-    <div class="absolute bottom-10 left-10 w-[300px] h-[300px] bg-[#00E5FF]/5 blur-[100px] rounded-full pointer-events-none -z-10"></div>
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] sm:w-[650px] h-[250px] sm:h-[350px] bg-[#00E5FF]/10 blur-[100px] sm:blur-[130px] rounded-full pointer-events-none -z-10"></div>
+    <div class="absolute bottom-10 left-10 w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] bg-[#00E5FF]/5 blur-[80px] sm:blur-[100px] rounded-full pointer-events-none -z-10"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
         
         <!-- Left Column: Copy & CTAs (7 cols) -->
-        <div class="lg:col-span-7 space-y-6 text-left">
+        <div class="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
           
           <!-- Badge: Brand & Shipping -->
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#151921] border border-[#232B3B] shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-            <span class="relative flex h-2 w-2">
+          <div class="inline-flex flex-wrap items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full bg-[#151921] border border-[#232B3B] shadow-[0_0_15px_rgba(0,0,0,0.5)] max-w-full">
+            <span class="relative flex h-2 w-2 shrink-0">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00E5FF] opacity-75"></span>
               <span class="relative inline-flex rounded-full h-2 w-2 bg-[#00E5FF]"></span>
             </span>
             <span class="text-xs font-semibold text-[#F3F4F6] font-['Space_Grotesk'] tracking-wide">
               NEXFORMA.3D
             </span>
-            <span class="text-[#232B3B]">|</span>
-            <span class="text-xs text-[#9CA3AF] flex items-center gap-1 font-['JetBrains_Mono']">
-              <Globe2 class="w-3.5 h-3.5 text-[#00E5FF]" /> Envio para Brasil e Exterior
+            <span class="text-[#232B3B] hidden xs:inline">•</span>
+            <span class="text-[11px] sm:text-xs text-[#9CA3AF] flex items-center gap-1 font-['JetBrains_Mono']">
+              <Globe2 class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" /> 
+              <span>Envio para Brasil e Exterior</span>
             </span>
           </div>
 
-          <!-- Main Headline -->
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#F3F4F6] font-['Space_Grotesk'] leading-[1.1]">
+          <!-- Main Headline (Optimized for Mobile Viewports) -->
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[#F3F4F6] font-['Space_Grotesk'] leading-[1.15]">
             Dando forma às suas ideias, <br />
             <span class="bg-gradient-to-r from-[#00E5FF] via-[#70EFFF] to-[#F3F4F6] bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(0,229,255,0.4)]">
               camada por camada.
@@ -89,87 +90,87 @@ onUnmounted(() => {
           </h1>
 
           <!-- Subtitle / Bio Value Proposition -->
-          <p class="text-lg text-[#9CA3AF] max-w-2xl font-normal leading-relaxed">
+          <p class="text-sm sm:text-base lg:text-lg text-[#9CA3AF] max-w-2xl font-normal leading-relaxed">
             Especialistas em fabricação digital aditiva: desde <strong class="text-[#F3F4F6]">presentes personalizados</strong> e peças exclusivas de <strong class="text-[#F3F4F6]">decoração</strong>, até <strong class="text-[#F3F4F6]">utilidades para seu setup</strong> e <strong class="text-[#F3F4F6]">protótipos técnicos industriais</strong> sob medida.
           </p>
 
           <!-- Highlights Chips -->
-          <div class="flex flex-wrap gap-2.5 pt-2">
-            <div class="flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#151921]/80 border border-[#232B3B] text-xs text-[#9CA3AF]">
-              <CheckCircle2 class="w-3.5 h-3.5 text-[#00E5FF]" />
+          <div class="flex flex-wrap gap-2 pt-1">
+            <div class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-md bg-[#151921]/80 border border-[#232B3B] text-[11px] sm:text-xs text-[#9CA3AF]">
+              <CheckCircle2 class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
               <span>Alta Resolução (0.08mm - 0.20mm)</span>
             </div>
-            <div class="flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#151921]/80 border border-[#232B3B] text-xs text-[#9CA3AF]">
-              <CheckCircle2 class="w-3.5 h-3.5 text-[#00E5FF]" />
+            <div class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-md bg-[#151921]/80 border border-[#232B3B] text-[11px] sm:text-xs text-[#9CA3AF]">
+              <CheckCircle2 class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
               <span>Filamentos de Engenharia & Resina</span>
             </div>
-            <div class="flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#151921]/80 border border-[#232B3B] text-xs text-[#9CA3AF]">
-              <CheckCircle2 class="w-3.5 h-3.5 text-[#00E5FF]" />
+            <div class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-md bg-[#151921]/80 border border-[#232B3B] text-[11px] sm:text-xs text-[#9CA3AF]">
+              <CheckCircle2 class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
               <span>Orçamento Ágil sem Compromisso</span>
             </div>
           </div>
 
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+          <!-- Action Buttons (Responsive flex-col on mobile, flex-row on desktop) -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-3 sm:pt-4">
             <a 
               :href="WHATSAPP_URL"
               target="_blank" 
               rel="noopener noreferrer"
-              class="relative group overflow-hidden px-7 py-3.5 rounded-lg bg-[#00E5FF] text-[#0B0D10] font-bold text-center flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,255,0.45)] hover:shadow-[0_0_35px_rgba(0,229,255,0.7)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              class="w-full sm:w-auto relative group overflow-hidden px-6 sm:px-7 py-3.5 rounded-xl bg-[#00E5FF] text-[#0B0D10] font-bold text-center flex items-center justify-center gap-2.5 shadow-[0_0_25px_rgba(0,229,255,0.45)] hover:shadow-[0_0_35px_rgba(0,229,255,0.7)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] min-h-[48px]"
             >
               <span class="absolute inset-0 w-full h-full bg-white/25 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
-              <MessageSquare class="w-5 h-5 fill-current" />
+              <MessageSquare class="w-5 h-5 fill-current shrink-0" />
               <span>Pedir Orçamento no WhatsApp</span>
             </a>
 
             <a 
               href="#catalogo"
-              class="px-6 py-3.5 rounded-lg bg-[#151921] hover:bg-[#1C222E] border border-[#232B3B] hover:border-[#00E5FF]/50 text-[#F3F4F6] font-semibold text-center flex items-center justify-center gap-2 transition-all duration-200"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-[#151921] hover:bg-[#1C222E] border border-[#232B3B] hover:border-[#00E5FF]/50 text-[#F3F4F6] font-semibold text-center flex items-center justify-center gap-2 transition-all duration-200 min-h-[48px]"
             >
               <span>Ver Catálogo & Ideias</span>
-              <ArrowRight class="w-4 h-4 text-[#00E5FF]" />
+              <ArrowRight class="w-4 h-4 text-[#00E5FF] shrink-0" />
             </a>
           </div>
 
           <!-- Social Proof note -->
-          <div class="flex items-center gap-3 pt-2 text-xs text-[#9CA3AF]">
-            <div class="flex -space-x-2">
+          <div class="flex items-center gap-3 pt-1 text-xs text-[#9CA3AF]">
+            <div class="flex -space-x-2 shrink-0">
               <div class="w-7 h-7 rounded-full bg-[#1C222E] border border-[#00E5FF]/40 flex items-center justify-center text-[10px] text-[#00E5FF] font-bold">3D</div>
               <div class="w-7 h-7 rounded-full bg-[#151921] border border-[#232B3B] flex items-center justify-center text-[10px] text-white">BR</div>
               <div class="w-7 h-7 rounded-full bg-[#111620] border border-[#232B3B] flex items-center justify-center text-[10px] text-[#00E5FF]">✦</div>
             </div>
-            <span>Atendimento direto com especialistas via WhatsApp ou Instagram <strong>@nexforma.3d</strong></span>
+            <span class="text-[11px] sm:text-xs">Atendimento direto com especialistas via WhatsApp ou Instagram <strong>@nexforma.3d</strong></span>
           </div>
 
         </div>
 
         <!-- Right Column: Interactive 3D Print Simulation Card (5 cols) -->
-        <div class="lg:col-span-5">
+        <div class="lg:col-span-5 mt-4 lg:mt-0">
           <div class="relative rounded-2xl bg-[#151921] border border-[#232B3B] shadow-[0_15px_50px_rgba(0,0,0,0.8)] overflow-hidden group hover:border-[#00E5FF]/50 transition-all duration-500">
             
             <!-- Terminal Header / Status Bar -->
-            <div class="px-5 py-3.5 bg-[#0D1016] border-b border-[#232B3B] flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
-                <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
-                <span class="w-3 h-3 rounded-full bg-[#00E5FF]/80"></span>
-                <span class="ml-2 text-xs font-['JetBrains_Mono'] text-[#9CA3AF]">BAMBU_X1C // LIVE_TELEMETRY</span>
+            <div class="px-4 sm:px-5 py-3 bg-[#0D1016] border-b border-[#232B3B] flex items-center justify-between">
+              <div class="flex items-center gap-1.5 sm:gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-[#00E5FF]/80"></span>
+                <span class="ml-1 sm:ml-2 text-[10px] sm:text-xs font-['JetBrains_Mono'] text-[#9CA3AF] truncate max-w-[140px] sm:max-w-none">BAMBU_X1C // LIVE</span>
               </div>
               
-              <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#00E5FF]/10 border border-[#00E5FF]/30 text-[11px] font-['JetBrains_Mono'] text-[#00E5FF]">
+              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#00E5FF]/10 border border-[#00E5FF]/30 text-[10px] sm:text-[11px] font-['JetBrains_Mono'] text-[#00E5FF]">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-ping"></span>
                 <span>FABRICANDO</span>
               </div>
             </div>
 
             <!-- 3D Isometric Build Plate Visualizer -->
-            <div class="relative h-64 bg-[#0B0D10] build-plate-grid flex items-center justify-center overflow-hidden border-b border-[#232B3B]">
+            <div class="relative h-52 sm:h-64 bg-[#0B0D10] build-plate-grid flex items-center justify-center overflow-hidden border-b border-[#232B3B]">
               
               <!-- Laser Scanner Line -->
               <div class="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#00E5FF] to-transparent shadow-[0_0_12px_#00E5FF] animate-laser z-20 pointer-events-none"></div>
 
               <!-- Isometric Model Representation (Layers in Progress) -->
-              <div class="relative w-48 h-48 flex items-center justify-center">
+              <div class="relative w-40 sm:w-48 h-40 sm:h-48 flex items-center justify-center">
                 
                 <!-- Build Plate Grid Base in 3D perspective -->
                 <svg viewBox="0 0 200 200" class="w-full h-full">
@@ -211,11 +212,11 @@ onUnmounted(() => {
                 </svg>
 
                 <!-- Floating Coordinates Overlay -->
-                <div class="absolute top-2 left-2 bg-[#0B0D10]/80 backdrop-blur-sm border border-[#232B3B] px-2 py-1 rounded text-[10px] font-['JetBrains_Mono'] text-[#00E5FF]">
+                <div class="absolute top-2 left-2 bg-[#0B0D10]/80 backdrop-blur-sm border border-[#232B3B] px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-['JetBrains_Mono'] text-[#00E5FF]">
                   Z: +29.44mm (0.16)
                 </div>
 
-                <div class="absolute bottom-2 right-2 bg-[#0B0D10]/80 backdrop-blur-sm border border-[#232B3B] px-2 py-1 rounded text-[10px] font-['JetBrains_Mono'] text-[#9CA3AF]">
+                <div class="absolute bottom-2 right-2 bg-[#0B0D10]/80 backdrop-blur-sm border border-[#232B3B] px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-['JetBrains_Mono'] text-[#9CA3AF]">
                   INFILL: 45% GYROID
                 </div>
               </div>
@@ -223,15 +224,15 @@ onUnmounted(() => {
             </div>
 
             <!-- Print Telemetry Stats Grid -->
-            <div class="p-5 space-y-4">
+            <div class="p-4 sm:p-5 space-y-3.5 sm:space-y-4">
               
               <!-- Progress Bar -->
               <div class="space-y-1.5">
                 <div class="flex items-center justify-between text-xs font-['JetBrains_Mono']">
-                  <span class="text-[#9CA3AF] flex items-center gap-1.5">
-                    <Layers class="w-3.5 h-3.5 text-[#00E5FF]" /> Progresso: Camada {{ currentLayer }} / {{ totalLayers }}
+                  <span class="text-[#9CA3AF] flex items-center gap-1.5 text-[11px] sm:text-xs">
+                    <Layers class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" /> Progresso: Camada {{ currentLayer }} / {{ totalLayers }}
                   </span>
-                  <span class="text-[#00E5FF] font-bold">{{ progressPercent }}%</span>
+                  <span class="text-[#00E5FF] font-bold text-xs">{{ progressPercent }}%</span>
                 </div>
                 <div class="w-full h-2 rounded-full bg-[#0D1016] border border-[#232B3B] overflow-hidden p-[1px]">
                   <div 
@@ -242,48 +243,48 @@ onUnmounted(() => {
               </div>
 
               <!-- 4 Telemetry Metrics Grid -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 font-['JetBrains_Mono'] text-xs">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 font-['JetBrains_Mono'] text-xs">
                 
                 <!-- Metric 1: Nozzle -->
-                <div class="p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
+                <div class="p-2 sm:p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
                   <div class="flex items-center gap-1 text-[#9CA3AF] text-[10px]">
-                    <Flame class="w-3 h-3 text-red-400" /> Bico (E0)
+                    <Flame class="w-3 h-3 text-red-400 shrink-0" /> Bico (E0)
                   </div>
-                  <span class="text-sm font-bold text-[#F3F4F6] mt-0.5">{{ nozzleTemp }}°C</span>
+                  <span class="text-xs sm:text-sm font-bold text-[#F3F4F6] mt-0.5">{{ nozzleTemp }}°C</span>
                   <span class="text-[9px] text-[#9CA3AF]">Meta: 220°C</span>
                 </div>
 
                 <!-- Metric 2: Bed -->
-                <div class="p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
+                <div class="p-2 sm:p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
                   <div class="flex items-center gap-1 text-[#9CA3AF] text-[10px]">
-                    <Thermometer class="w-3 h-3 text-amber-400" /> Mesa
+                    <Thermometer class="w-3 h-3 text-amber-400 shrink-0" /> Mesa
                   </div>
-                  <span class="text-sm font-bold text-[#F3F4F6] mt-0.5">{{ bedTemp }}°C</span>
+                  <span class="text-xs sm:text-sm font-bold text-[#F3F4F6] mt-0.5">{{ bedTemp }}°C</span>
                   <span class="text-[9px] text-[#9CA3AF]">Meta: 60°C</span>
                 </div>
 
                 <!-- Metric 3: Speed -->
-                <div class="p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
+                <div class="p-2 sm:p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
                   <div class="flex items-center gap-1 text-[#9CA3AF] text-[10px]">
-                    <Gauge class="w-3 h-3 text-[#00E5FF]" /> Velocidade
+                    <Gauge class="w-3 h-3 text-[#00E5FF] shrink-0" /> Velocidade
                   </div>
-                  <span class="text-sm font-bold text-[#00E5FF] mt-0.5">250 mm/s</span>
+                  <span class="text-xs sm:text-sm font-bold text-[#00E5FF] mt-0.5">250 mm/s</span>
                   <span class="text-[9px] text-[#9CA3AF]">Acel: 10K</span>
                 </div>
 
                 <!-- Metric 4: Filament -->
-                <div class="p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
+                <div class="p-2 sm:p-2.5 rounded-lg bg-[#0D1016] border border-[#232B3B] flex flex-col">
                   <div class="flex items-center gap-1 text-[#9CA3AF] text-[10px]">
-                    <Cpu class="w-3 h-3 text-[#00E5FF]" /> Material
+                    <Cpu class="w-3 h-3 text-[#00E5FF] shrink-0" /> Material
                   </div>
-                  <span class="text-sm font-bold text-[#F3F4F6] mt-0.5 truncate">PETG-CF</span>
+                  <span class="text-xs sm:text-sm font-bold text-[#F3F4F6] mt-0.5 truncate">PETG-CF</span>
                   <span class="text-[9px] text-[#00E5FF]">Ciano / Tech</span>
                 </div>
 
               </div>
 
               <!-- Simulated GCode Console Line -->
-              <div class="flex items-center gap-2 p-2 rounded-md bg-[#0D1016] border border-[#232B3B] text-[11px] font-['JetBrains_Mono'] text-[#9CA3AF] overflow-hidden">
+              <div class="flex items-center gap-2 p-2 rounded-md bg-[#0D1016] border border-[#232B3B] text-[10px] sm:text-[11px] font-['JetBrains_Mono'] text-[#9CA3AF] overflow-hidden">
                 <Terminal class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
                 <span class="text-[#00E5FF] shrink-0">$</span>
                 <span class="truncate text-[#F3F4F6]">{{ currentGcode }}</span>

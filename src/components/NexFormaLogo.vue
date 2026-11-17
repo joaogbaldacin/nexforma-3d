@@ -12,11 +12,11 @@ defineProps({
 </script>
 
 <template>
-  <div class="flex items-center gap-3 select-none group cursor-pointer">
+  <div class="flex items-center gap-2.5 sm:gap-3 select-none group cursor-pointer shrink-0">
     <!-- Isometric Layered Cube SVG Icon -->
     <div 
-      class="relative flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
-      :class="size === 'large' ? 'w-12 h-12' : size === 'small' ? 'w-8 h-8' : 'w-10 h-10'"
+      class="relative flex items-center justify-center transition-transform duration-300 group-hover:scale-105 shrink-0"
+      :class="size === 'large' ? 'w-11 h-11 sm:w-12 sm:h-12' : size === 'small' ? 'w-7 h-7 sm:w-8 sm:h-8' : 'w-9 h-9 sm:w-10 sm:h-10'"
     >
       <svg 
         class="w-full h-full drop-shadow-[0_0_12px_rgba(0,229,255,0.4)]"
@@ -78,21 +78,21 @@ defineProps({
     </div>
 
     <!-- Text Portion -->
-    <div class="flex flex-col">
+    <div class="flex flex-col justify-center leading-none">
       <div class="flex items-baseline tracking-wider font-extrabold text-[#F3F4F6] font-['Space_Grotesk'] leading-none">
-        <span :class="size === 'large' ? 'text-2xl' : size === 'small' ? 'text-lg' : 'text-xl'">
+        <span :class="size === 'large' ? 'text-xl sm:text-2xl' : size === 'small' ? 'text-base sm:text-lg' : 'text-lg sm:text-xl'">
           NEXFORMA
         </span>
         <span 
           class="text-[#00E5FF] font-black drop-shadow-[0_0_8px_rgba(0,229,255,0.7)]"
-          :class="size === 'large' ? 'text-2xl' : size === 'small' ? 'text-lg' : 'text-xl'"
+          :class="size === 'large' ? 'text-xl sm:text-2xl' : size === 'small' ? 'text-base sm:text-lg' : 'text-lg sm:text-xl'"
         >
           .3D
         </span>
       </div>
       <span 
         v-if="showTagline" 
-        class="text-[10px] tracking-widest uppercase text-[#9CA3AF] font-['JetBrains_Mono'] mt-1"
+        class="text-[9px] sm:text-[10px] tracking-widest uppercase text-[#9CA3AF] font-['JetBrains_Mono'] mt-1"
       >
         Fabricação Digital
       </span>

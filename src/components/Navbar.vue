@@ -16,7 +16,7 @@ const navLinks = [
 ]
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 30
+  isScrolled.value = window.scrollY > 20
 }
 
 onMounted(() => {
@@ -37,20 +37,20 @@ const closeMobileMenu = () => {
     class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
     :class="[
       isScrolled 
-        ? 'bg-[#0B0D10]/90 backdrop-blur-md border-b border-[#232B3B] py-3 shadow-[0_4px_20px_rgba(0,0,0,0.5)]' 
-        : 'bg-transparent py-5'
+        ? 'bg-[#0B0D10]/95 backdrop-blur-md border-b border-[#232B3B] py-2.5 sm:py-3 shadow-[0_4px_20px_rgba(0,0,0,0.5)]' 
+        : 'bg-transparent py-3.5 sm:py-5'
     ]"
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between gap-2 sm:gap-4">
         
         <!-- Logo -->
-        <a href="#hero" class="flex items-center" @click="closeMobileMenu">
+        <a href="#hero" class="flex items-center shrink-0" @click="closeMobileMenu">
           <NexFormaLogo size="normal" :show-tagline="false" />
         </a>
 
         <!-- Desktop Navigation Links -->
-        <nav class="hidden md:flex items-center gap-8">
+        <nav class="hidden md:flex items-center gap-6 lg:gap-8">
           <a 
             v-for="link in navLinks" 
             :key="link.name" 
@@ -62,7 +62,7 @@ const closeMobileMenu = () => {
           </a>
         </nav>
 
-        <!-- Right Side: Social & CTA -->
+        <!-- Right Side: Desktop Social & CTA -->
         <div class="hidden md:flex items-center gap-3">
           <!-- Clean Round Instagram Icon Button -->
           <a 
@@ -80,7 +80,7 @@ const closeMobileMenu = () => {
           <button 
             type="button"
             @click="emit('open-quote')"
-            class="relative group overflow-hidden rounded-lg px-5 py-2.5 text-sm font-semibold text-[#0B0D10] bg-[#00E5FF] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] active:scale-95 cursor-pointer flex items-center gap-2"
+            class="relative group overflow-hidden rounded-xl px-5 py-2.5 text-sm font-semibold text-[#0B0D10] bg-[#00E5FF] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] active:scale-95 cursor-pointer flex items-center gap-2 min-h-[42px]"
           >
             <span class="absolute inset-0 w-full h-full bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
             <MessageSquare class="w-4 h-4 fill-current" />
@@ -88,32 +88,35 @@ const closeMobileMenu = () => {
           </button>
         </div>
 
-        <!-- Mobile Menu Controls -->
-        <div class="flex items-center gap-2.5 md:hidden">
+        <!-- Mobile Controls (Clean, Compact, No Overlap) -->
+        <div class="flex items-center gap-1.5 sm:gap-2.5 md:hidden shrink-0">
           <!-- Mobile Instagram Icon Button -->
           <a 
             href="https://instagram.com/nexforma.3d" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="w-9 h-9 rounded-full bg-[#151921] border border-[#232B3B] hover:border-[#00E5FF] text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center transition-all"
+            class="w-9 h-9 rounded-full bg-[#151921] border border-[#232B3B] hover:border-[#00E5FF] text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center transition-all active:scale-95 shrink-0"
+            title="Instagram"
             aria-label="Instagram da NexForma.3D"
           >
             <Instagram class="w-4 h-4" />
           </a>
 
+          <!-- Quick Quote Button -->
           <button 
             type="button"
             @click="emit('open-quote')"
-            class="px-3 py-1.5 text-xs font-semibold rounded bg-[#00E5FF] text-[#0B0D10] flex items-center gap-1 cursor-pointer"
+            class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#00E5FF] text-[#0B0D10] flex items-center gap-1 active:scale-95 cursor-pointer shrink-0 min-h-[36px]"
           >
-            <MessageSquare class="w-3.5 h-3.5" />
-            <span>Orçamento</span>
+            <MessageSquare class="w-3.5 h-3.5 fill-current" />
+            <span class="hidden xs:inline sm:inline">Orçamento</span>
           </button>
 
+          <!-- Hamburger Menu Toggle Button -->
           <button 
             type="button"
             @click="isMobileMenuOpen = !isMobileMenuOpen"
-            class="p-2 rounded-lg bg-[#151921] border border-[#232B3B] text-[#9CA3AF] hover:text-[#00E5FF] focus:outline-none cursor-pointer"
+            class="w-9 h-9 rounded-lg bg-[#151921] border border-[#232B3B] text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center focus:outline-none cursor-pointer active:scale-95 shrink-0"
             aria-label="Abrir Menu"
           >
             <Menu v-if="!isMobileMenuOpen" class="w-5 h-5" />
@@ -135,36 +138,36 @@ const closeMobileMenu = () => {
     >
       <div 
         v-if="isMobileMenuOpen" 
-        class="md:hidden bg-[#0B0D10]/95 backdrop-blur-xl border-b border-[#232B3B] px-6 py-6 space-y-4 shadow-2xl"
+        class="md:hidden bg-[#0B0D10]/98 backdrop-blur-xl border-b border-[#232B3B] px-5 sm:px-6 py-6 space-y-4 shadow-2xl"
       >
-        <div class="flex flex-col space-y-3">
+        <div class="flex flex-col space-y-2">
           <a 
             v-for="link in navLinks" 
             :key="link.name" 
             :href="link.href"
             @click="closeMobileMenu"
-            class="text-base font-medium text-[#F3F4F6] hover:text-[#00E5FF] py-2 border-b border-[#232B3B]/40 flex items-center justify-between"
+            class="text-base font-medium text-[#F3F4F6] hover:text-[#00E5FF] py-3 border-b border-[#232B3B]/40 flex items-center justify-between"
           >
             <span>{{ link.name }}</span>
             <ChevronRight class="w-4 h-4 text-[#9CA3AF]" />
           </a>
         </div>
 
-        <div class="pt-2 flex flex-col gap-3">
+        <div class="pt-3 flex flex-col gap-3">
           <a 
             href="https://instagram.com/nexforma.3d" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-[#151921] border border-[#232B3B] text-sm text-[#9CA3AF] hover:text-[#00E5FF]"
+            class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#151921] border border-[#232B3B] text-sm text-[#9CA3AF] hover:text-[#00E5FF] active:scale-98 transition-all"
           >
             <Instagram class="w-4 h-4 text-[#00E5FF]" />
-            <span class="font-['Space_Grotesk']">Instagram @nexforma.3d</span>
+            <span class="font-['Space_Grotesk'] font-medium">Instagram @nexforma.3d</span>
           </a>
 
           <button 
             type="button"
             @click="() => { closeMobileMenu(); emit('open-quote'); }"
-            class="w-full py-3 rounded-lg bg-[#00E5FF] text-[#0B0D10] font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,229,255,0.4)] cursor-pointer"
+            class="w-full py-3.5 rounded-xl bg-[#00E5FF] text-[#0B0D10] font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,229,255,0.4)] cursor-pointer active:scale-98 min-h-[48px]"
           >
             <MessageSquare class="w-4 h-4 fill-current" />
             <span>Pedir Orçamento no WhatsApp</span>

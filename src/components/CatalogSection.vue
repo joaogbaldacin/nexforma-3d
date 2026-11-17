@@ -175,48 +175,48 @@ const getOrderLink = (productName) => {
 </script>
 
 <template>
-  <section id="catalogo" class="py-24 bg-[#0B0D10] relative">
+  <section id="catalogo" class="py-16 sm:py-20 md:py-24 bg-[#0B0D10] relative">
     
     <!-- Ambient subtle background glow -->
-    <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#00E5FF]/5 blur-[160px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-1/4 right-1/4 w-[320px] sm:w-[500px] h-[320px] sm:h-[500px] bg-[#00E5FF]/5 blur-[120px] sm:blur-[160px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
       <!-- Section Header (Warm & Humanized) -->
-      <div class="text-center max-w-3xl mx-auto mb-14 space-y-4">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#151921] border border-[#232B3B] text-xs font-['Space_Grotesk'] text-[#00E5FF]">
+      <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-14 space-y-3 sm:space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#151921] border border-[#232B3B] text-xs font-['Space_Grotesk'] text-[#00E5FF]">
           <Sparkles class="w-3.5 h-3.5 text-[#00E5FF]" />
           <span>VITRINE DE CRIAÇÕES & DESIGN</span>
         </div>
         
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-['Space_Grotesk'] text-[#F3F4F6] tracking-tight">
+        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold font-['Space_Grotesk'] text-[#F3F4F6] tracking-tight">
           Peças Exclusivas & Feitas Sob Medida
         </h2>
         
-        <p class="text-[#9CA3AF] text-base sm:text-lg leading-relaxed">
+        <p class="text-[#9CA3AF] text-sm sm:text-base lg:text-lg leading-relaxed">
           Cada peça da <strong>NexForma.3D</strong> une a precisão da tecnologia digital ao cuidado do acabamento manual. Inspire-se nos modelos abaixo ou peça uma versão personalizada com suas cores e dimensões favoritas.
         </p>
 
         <!-- Warm humanized pledge -->
-        <div class="flex items-center justify-center gap-6 pt-2 text-xs text-[#9CA3AF]">
+        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 pt-1 text-xs text-[#9CA3AF]">
           <span class="flex items-center gap-1.5">
-            <Heart class="w-3.5 h-3.5 text-[#00E5FF]" /> Produção artesanal & sob medida
+            <Heart class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" /> Produção artesanal & sob medida
           </span>
-          <span class="text-[#232B3B]">•</span>
+          <span class="text-[#232B3B] hidden sm:inline">•</span>
           <span class="flex items-center gap-1.5">
-            <Palette class="w-3.5 h-3.5 text-[#00E5FF]" /> Cores e tamanhos personalizáveis
+            <Palette class="w-3.5 h-3.5 text-[#00E5FF] shrink-0" /> Cores e tamanhos personalizáveis
           </span>
         </div>
       </div>
 
       <!-- Filter Buttons (Smooth & Elegant Pills) -->
-      <div class="flex items-center justify-center gap-2 sm:gap-3 flex-wrap mb-14">
+      <div class="flex items-center justify-center gap-1.5 sm:gap-2.5 flex-wrap mb-10 sm:mb-14">
         <button
           v-for="cat in categories"
           :key="cat.id"
           type="button"
           @click="selectedCategory = cat.id"
-          class="px-5 py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer border select-none"
+          class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer border select-none active:scale-95"
           :class="[
             selectedCategory === cat.id
               ? 'bg-[#00E5FF] text-[#0B0D10] font-bold border-[#00E5FF] shadow-[0_0_20px_rgba(0,229,255,0.4)] scale-105'
@@ -228,27 +228,27 @@ const getOrderLink = (productName) => {
       </div>
 
       <!-- Products Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         <div 
           v-for="product in filteredProducts" 
           :key="product.id"
-          class="rounded-3xl bg-[#151921] border border-[#232B3B] overflow-hidden flex flex-col justify-between transition-all duration-400 hover:border-[#00E5FF]/60 hover:shadow-[0_16px_45px_rgba(0,0,0,0.7)] hover:-translate-y-2 group"
+          class="rounded-2xl sm:rounded-3xl bg-[#151921] border border-[#232B3B] overflow-hidden flex flex-col justify-between transition-all duration-400 hover:border-[#00E5FF]/60 hover:shadow-[0_16px_45px_rgba(0,0,0,0.7)] hover:-translate-y-1.5 group"
         >
           
           <div>
             <!-- Studio Photography Mockup Box -->
-            <div class="relative h-64 bg-gradient-to-b from-[#131720] via-[#0E1219] to-[#0A0D12] border-b border-[#232B3B] flex items-center justify-center overflow-hidden">
+            <div class="relative h-56 sm:h-64 bg-gradient-to-b from-[#131720] via-[#0E1219] to-[#0A0D12] border-b border-[#232B3B] flex items-center justify-center overflow-hidden">
               
               <!-- Soft studio ambient lighting -->
               <div class="absolute inset-0 bg-radial from-[#00E5FF]/10 via-transparent to-transparent opacity-30 group-hover:opacity-70 transition-opacity duration-500"></div>
 
               <!-- Floor shadow pedestal -->
-              <div class="absolute bottom-5 w-44 h-8 bg-black/60 rounded-full blur-md"></div>
+              <div class="absolute bottom-5 w-36 sm:w-44 h-7 sm:h-8 bg-black/60 rounded-full blur-md"></div>
 
               <!-- Vector Studio Illustrations with Depth & Warmth -->
               
               <!-- 1. Vaso Escultural Helix -->
-              <svg v-if="product.svgType === 'vase'" viewBox="0 0 200 200" class="w-44 h-44 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+              <svg v-if="product.svgType === 'vase'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
                 <defs>
                   <linearGradient id="vase-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#2D3B4F"/>
@@ -273,7 +273,7 @@ const getOrderLink = (productName) => {
               </svg>
 
               <!-- 2. Luminária Moonlit 3D com Base de Madeira -->
-              <svg v-else-if="product.svgType === 'moon'" viewBox="0 0 200 200" class="w-44 h-44 drop-shadow-[0_12px_30px_rgba(0,229,255,0.25)] transition-transform duration-500 group-hover:scale-108">
+              <svg v-else-if="product.svgType === 'moon'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_12px_30px_rgba(0,229,255,0.25)] transition-transform duration-500 group-hover:scale-108">
                 <defs>
                   <radialGradient id="moon-light" cx="40%" cy="35%" r="65%">
                     <stop offset="0%" stop-color="#FFFFFF"/>
@@ -305,7 +305,7 @@ const getOrderLink = (productName) => {
               </svg>
 
               <!-- 3. Suporte Minimalista para Headphone -->
-              <svg v-else-if="product.svgType === 'headphone'" viewBox="0 0 200 200" class="w-44 h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+              <svg v-else-if="product.svgType === 'headphone'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
                 <!-- Base with weighted bevel -->
                 <rect x="55" y="152" width="90" height="12" rx="6" fill="#1C2433" stroke="#2D3B4F" stroke-width="1.5" />
                 <rect x="62" y="154" width="76" height="3" rx="1.5" fill="#00E5FF" opacity="0.5" />
@@ -321,7 +321,7 @@ const getOrderLink = (productName) => {
               </svg>
 
               <!-- 4. Kit Organizador Hexagonal de Mesa -->
-              <svg v-else-if="product.svgType === 'hex'" viewBox="0 0 200 200" class="w-44 h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+              <svg v-else-if="product.svgType === 'hex'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
                 <!-- Center Hexagon Container -->
                 <polygon points="100,65 130,82 130,118 100,135 70,118 70,82" fill="#202A39" stroke="#2F3F56" stroke-width="2" />
                 <polygon points="100,68 126,83 126,115 100,130 74,115 74,83" fill="#131B26" />
@@ -337,7 +337,7 @@ const getOrderLink = (productName) => {
               </svg>
 
               <!-- 5. Miniatura Samurai Shadow Articulada -->
-              <svg v-else-if="product.svgType === 'samurai'" viewBox="0 0 200 200" class="w-44 h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+              <svg v-else-if="product.svgType === 'samurai'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
                 <!-- Studio Display Pedestal -->
                 <ellipse cx="100" cy="158" rx="48" ry="10" fill="#1A222F" stroke="#2B384B" stroke-width="2" />
                 <ellipse cx="100" cy="158" rx="38" ry="6" fill="#0F141D" stroke="#00E5FF" stroke-width="1" />
@@ -354,7 +354,7 @@ const getOrderLink = (productName) => {
               </svg>
 
               <!-- 6. Engrenagem & Peça de Engenharia -->
-              <svg v-else viewBox="0 0 200 200" class="w-44 h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:rotate-12">
+              <svg v-else viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:rotate-12">
                 <defs>
                   <linearGradient id="gear-metal" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#334155"/>
@@ -381,39 +381,39 @@ const getOrderLink = (productName) => {
               </svg>
 
               <!-- Top Left: Humanized Badge (Feito sob medida / Design autoral) -->
-              <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-[#0B0D10]/85 backdrop-blur-md border border-[#232B3B] text-[11px] font-['Space_Grotesk'] text-[#F3F4F6] flex items-center gap-1.5 shadow-sm">
+              <span class="absolute top-3.5 left-3.5 sm:top-4 sm:left-4 px-2.5 sm:px-3 py-1 rounded-full bg-[#0B0D10]/85 backdrop-blur-md border border-[#232B3B] text-[10px] sm:text-[11px] font-['Space_Grotesk'] text-[#F3F4F6] flex items-center gap-1.5 shadow-sm">
                 <Sparkles class="w-3 h-3 text-[#00E5FF]" />
                 <span>{{ product.badge }}</span>
               </span>
 
               <!-- Top Right: Category Tag -->
-              <span class="absolute top-4 right-4 px-2.5 py-1 rounded-full bg-[#151921]/90 backdrop-blur-md border border-[#232B3B] text-[10px] font-['Space_Grotesk'] text-[#9CA3AF]">
+              <span class="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 px-2 sm:px-2.5 py-1 rounded-full bg-[#151921]/90 backdrop-blur-md border border-[#232B3B] text-[9px] sm:text-[10px] font-['Space_Grotesk'] text-[#9CA3AF]">
                 {{ product.categoryLabel }}
               </span>
 
             </div>
 
             <!-- Card Body (Clean & Welcoming E-Commerce Style) -->
-            <div class="p-6 pb-2">
+            <div class="p-4 sm:p-6 pb-2">
               
               <!-- Product Title -->
-              <h3 class="text-xl font-bold font-['Space_Grotesk'] text-[#F3F4F6] mb-2 group-hover:text-[#00E5FF] transition-colors leading-snug">
+              <h3 class="text-lg sm:text-xl font-bold font-['Space_Grotesk'] text-[#F3F4F6] mb-1.5 sm:mb-2 group-hover:text-[#00E5FF] transition-colors leading-snug">
                 {{ product.name }}
               </h3>
 
               <!-- Humanized Benefit/Feeling Description -->
-              <p class="text-xs sm:text-sm text-[#9CA3AF] leading-relaxed mb-4">
+              <p class="text-xs sm:text-sm text-[#9CA3AF] leading-relaxed mb-3 sm:mb-4">
                 {{ product.description }}
               </p>
 
               <!-- Sensory & Practical Highlights -->
-              <div class="flex flex-wrap items-center gap-2 mb-4">
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#0B0D10] text-[11px] text-[#D1D5DB] border border-[#232B3B]">
-                  <Heart class="w-3 h-3 text-[#00E5FF]" />
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#0B0D10] text-[10px] sm:text-[11px] text-[#D1D5DB] border border-[#232B3B]">
+                  <Heart class="w-3 h-3 text-[#00E5FF] shrink-0" />
                   <span>{{ product.highlight }}</span>
                 </span>
                 
-                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#0B0D10] text-[11px] text-[#9CA3AF] border border-[#232B3B]">
+                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#0B0D10] text-[10px] sm:text-[11px] text-[#9CA3AF] border border-[#232B3B]">
                   <span>{{ product.materialHighlight }}</span>
                 </span>
               </div>
@@ -422,22 +422,22 @@ const getOrderLink = (productName) => {
           </div>
 
           <!-- Card Footer: Price, Specs Button & Friendly WhatsApp Button -->
-          <div class="p-6 pt-2">
-            <div class="pt-4 border-t border-[#232B3B]/80 space-y-3">
+          <div class="p-4 sm:p-6 pt-2">
+            <div class="pt-3 sm:pt-4 border-t border-[#232B3B]/80 space-y-2.5 sm:space-y-3">
               
               <!-- Price in Evidence -->
-              <div class="flex items-baseline justify-between mb-1">
+              <div class="flex items-baseline justify-between mb-0.5">
                 <div class="flex flex-col">
-                  <span class="text-[11px] text-[#9CA3AF] uppercase font-['Space_Grotesk'] tracking-wider">
+                  <span class="text-[10px] sm:text-[11px] text-[#9CA3AF] uppercase font-['Space_Grotesk'] tracking-wider">
                     {{ product.pricePrefix }}
                   </span>
-                  <span class="text-2xl font-bold font-['Space_Grotesk'] text-[#F3F4F6] tracking-tight">
+                  <span class="text-xl sm:text-2xl font-bold font-['Space_Grotesk'] text-[#F3F4F6] tracking-tight">
                     {{ product.priceValue }}
                   </span>
                 </div>
 
-                <span class="text-[11px] text-[#00E5FF] font-['Space_Grotesk'] bg-[#00E5FF]/10 px-2.5 py-1 rounded-full border border-[#00E5FF]/20 flex items-center gap-1">
-                  <Clock class="w-3 h-3" />
+                <span class="text-[10px] sm:text-[11px] text-[#00E5FF] font-['Space_Grotesk'] bg-[#00E5FF]/10 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-[#00E5FF]/20 flex items-center gap-1">
+                  <Clock class="w-3 h-3 shrink-0" />
                   <span>{{ product.leadTimeBadge }}</span>
                 </span>
               </div>
@@ -446,9 +446,9 @@ const getOrderLink = (productName) => {
               <button
                 type="button"
                 @click="openSpecs(product)"
-                class="w-full py-2.5 px-4 rounded-xl bg-[#0B0D10] hover:bg-[#1C2330] border border-[#232B3B] hover:border-[#00E5FF]/60 text-xs font-semibold text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer group/btn"
+                class="w-full py-2.5 px-4 rounded-xl bg-[#0B0D10] hover:bg-[#1C2330] border border-[#232B3B] hover:border-[#00E5FF]/60 text-xs font-semibold text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer group/btn min-h-[44px] active:scale-98"
               >
-                <Info class="w-4 h-4 text-[#00E5FF] transition-transform duration-200 group-hover/btn:scale-110" />
+                <Info class="w-4 h-4 text-[#00E5FF] transition-transform duration-200 group-hover/btn:scale-110 shrink-0" />
                 <span>Mais especificações</span>
               </button>
 
@@ -457,9 +457,9 @@ const getOrderLink = (productName) => {
                 :href="getOrderLink(product.name)"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="w-full py-3.5 px-4 rounded-xl bg-[#00E5FF] hover:bg-[#33EBFF] text-[#0B0D10] font-bold text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_4px_16px_rgba(0,229,255,0.25)] hover:shadow-[0_4px_25px_rgba(0,229,255,0.5)] active:scale-[0.98] cursor-pointer"
+                class="w-full py-3.5 px-4 rounded-xl bg-[#00E5FF] hover:bg-[#33EBFF] text-[#0B0D10] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_4px_16px_rgba(0,229,255,0.25)] hover:shadow-[0_4px_25px_rgba(0,229,255,0.5)] active:scale-98 cursor-pointer min-h-[48px]"
               >
-                <MessageSquare class="w-4 h-4 fill-current" />
+                <MessageSquare class="w-4 h-4 fill-current shrink-0" />
                 <span>Encomendar pelo WhatsApp 💬</span>
               </a>
 
@@ -470,16 +470,16 @@ const getOrderLink = (productName) => {
       </div>
 
       <!-- Humanized Bottom Banner: Custom Requests -->
-      <div class="mt-16 p-8 rounded-3xl bg-gradient-to-r from-[#151921] via-[#1A2230] to-[#151921] border border-[#232B3B] flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+      <div class="mt-12 sm:mt-16 p-5 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-[#151921] via-[#1A2230] to-[#151921] border border-[#232B3B] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-5 sm:gap-6 shadow-xl">
         <div class="space-y-1 text-center md:text-left">
           <div class="inline-flex items-center gap-1.5 text-xs text-[#00E5FF] font-['Space_Grotesk'] font-bold mb-1">
             <Sparkles class="w-3.5 h-3.5" />
             <span>ATELIÊ SOB MEDIDA</span>
           </div>
-          <h4 class="text-lg sm:text-xl font-bold text-[#F3F4F6] font-['Space_Grotesk']">
+          <h4 class="text-base sm:text-lg md:text-xl font-bold text-[#F3F4F6] font-['Space_Grotesk']">
             Quer uma cor diferente, tamanho especial ou gravar seu nome/logo?
           </h4>
-          <p class="text-sm text-[#9CA3AF] max-w-2xl">
+          <p class="text-xs sm:text-sm text-[#9CA3AF] max-w-2xl">
             Conversamos com você em cada detalhe para que a peça fique perfeita no seu espaço. Cuidamos do projeto do primeiro esboço até a entrega com todo carinho.
           </p>
         </div>
@@ -488,9 +488,9 @@ const getOrderLink = (productName) => {
           :href="'https://wa.me/5514999999999?text=' + encodeURIComponent('Olá equipe da NexForma.3D! Gostaria de conversar sobre uma peça personalizada sob medida.')"
           target="_blank"
           rel="noopener noreferrer"
-          class="shrink-0 px-6 py-3.5 rounded-xl bg-[#151921] hover:bg-[#00E5FF] border border-[#00E5FF]/50 text-[#F3F4F6] hover:text-[#0B0D10] font-bold text-sm transition-all duration-300 flex items-center gap-2 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)]"
+          class="w-full md:w-auto shrink-0 px-6 py-3.5 rounded-xl bg-[#151921] hover:bg-[#00E5FF] border border-[#00E5FF]/50 text-[#F3F4F6] hover:text-[#0B0D10] font-bold text-xs sm:text-sm transition-all duration-300 flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] min-h-[48px] text-center"
         >
-          <MessageSquare class="w-4 h-4" />
+          <MessageSquare class="w-4 h-4 shrink-0" />
           <span>Falar com o Ateliê no WhatsApp 💬</span>
         </a>
       </div>
