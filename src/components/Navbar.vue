@@ -15,12 +15,12 @@ const emit = defineEmits(['open-quote', 'navigate'])
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
 
-// Tab-aware navigation items
+// Tab-aware navigation items (4 exclusive tabs)
 const navLinks = [
-  { name: 'Início',       tab: 'home',           scrollTo: null },
-  { name: 'Soluções',     tab: 'home',           scrollTo: 'solucoes' },
-  { name: 'Catálogo',     tab: 'catalogo',       scrollTo: null },
-  { name: 'Como Funciona',tab: 'como-funciona',  scrollTo: null },
+  { name: 'Início',        tab: 'home' },
+  { name: 'Soluções',      tab: 'solucoes' },
+  { name: 'Catálogo',      tab: 'catalogo' },
+  { name: 'Como Funciona', tab: 'como-funciona' },
 ]
 
 const handleScroll = () => {
@@ -39,33 +39,14 @@ const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
 
-// Main navigation handler
+// Main navigation handler: activates tab and notifies parent
 const handleNav = (link) => {
   closeMobileMenu()
-  if (link.scrollTo) {
-    // "Soluções": ensure home tab is active, then scroll to anchor
-    if (props.activeTab !== 'home') {
-      emit('navigate', 'home')
-      // After Vue reacts, scroll to #solucoes
-      setTimeout(() => {
-        const el = document.getElementById(link.scrollTo)
-        if (el) el.scrollIntoView({ behavior: 'smooth' })
-      }, 80)
-    } else {
-      const el = document.getElementById(link.scrollTo)
-      if (el) el.scrollIntoView({ behavior: 'smooth' })
-    }
-  } else {
-    emit('navigate', link.tab)
-  }
+  emit('navigate', link.tab)
 }
 
-// Active tab indicator
+// Active tab indicator - exclusively matches the current activeTab
 const isActive = (link) => {
-  if (link.scrollTo) {
-    // "Soluções" highlights when home is active
-    return props.activeTab === 'home'
-  }
   return props.activeTab === link.tab
 }
 

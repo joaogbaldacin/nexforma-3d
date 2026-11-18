@@ -123,13 +123,14 @@ onUnmounted(() => {
               <span>Pedir Orçamento no WhatsApp</span>
             </a>
 
-            <a 
-              href="#catalogo"
-              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-400/40 text-[#F3F4F6] font-semibold text-center flex items-center justify-center gap-2 transition-all duration-200 min-h-[48px]"
+            <button
+              type="button"
+              @click="emit('navigate', 'catalogo')"
+              class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 border border-slate-700/50 hover:border-cyan-400/40 text-[#F3F4F6] font-semibold text-center flex items-center justify-center gap-2 transition-all duration-200 min-h-[48px] cursor-pointer"
             >
               <span>Ver Catálogo & Ideias</span>
               <ArrowRight class="w-4 h-4 text-cyan-400 shrink-0" />
-            </a>
+            </button>
           </div>
 
           <!-- Social Proof note -->

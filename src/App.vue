@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import Navbar from './components/Navbar.vue'
 import HeroSection from './components/HeroSection.vue'
+import HomeHighlights from './components/HomeHighlights.vue'
 import SolutionsSection from './components/SolutionsSection.vue'
 import CatalogSection from './components/CatalogSection.vue'
 import HowItWorksSection from './components/HowItWorksSection.vue'
@@ -10,9 +11,9 @@ import QuoteModal from './components/QuoteModal.vue'
 import { MessageSquare } from 'lucide-vue-next'
 
 const isQuoteModalOpen = ref(false)
-// Tab navigation state — 'home' | 'catalogo' | 'como-funciona'
+// Tab navigation state — 'home' | 'solucoes' | 'catalogo' | 'como-funciona'
 const activeTab = ref('home')
-// Pre-selected catalog category when navigating from Solutions cards
+// Pre-selected catalog category when navigating from Solutions cards or highlights
 const catalogInitialCategory = ref('todos')
 
 const openQuote = () => {
@@ -23,7 +24,7 @@ const closeQuote = () => {
   isQuoteModalOpen.value = false
 }
 
-// Navigate to a tab and always scroll to top
+// Navigate to an independent tab and smoothly scroll to top
 const navigateTo = (tab, category = 'todos') => {
   activeTab.value = tab
   catalogInitialCategory.value = category
@@ -43,34 +44,40 @@ const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURICompon
       @navigate="navigateTo"
     />
 
-    <!-- Main Content: conditional tab rendering -->
+    <!-- Main Content: conditional tab rendering (4 independent tabs) -->
     <main class="flex-grow">
 
-      <!-- TAB: Início (home) -->
+      <!-- TAB 1: Início (home) — Landing page completa de alta conversão -->
       <template v-if="activeTab === 'home'">
         <HeroSection @open-quote="openQuote" @navigate="navigateTo" />
-        <SolutionsSection @open-quote="openQuote" @navigate="navigateTo" />
+        <HomeHighlights @open-quote="openQuote" @navigate="navigateTo" />
       </template>
 
-      <!-- TAB: Catálogo -->
+      <!-- TAB 2: Soluções (solucoes) — Exclusiva do portfólio multidisciplinar -->
+      <template v-else-if="activeTab === 'solucoes'">
+        <div class="pt-16 sm:pt-20 bg-[#172033]">
+          <SolutionsSection @open-quote="openQuote" @navigate="navigateTo" />
+        </div>
+      </template>
+
+      <!-- TAB 3: Catálogo (catalogo) — Vitrine com busca e filtros interativos -->
       <template v-else-if="activeTab === 'catalogo'">
-        <!-- top padding compensates the fixed navbar -->
-        <div class="pt-20 sm:pt-24">
+        <div class="pt-16 sm:pt-20 bg-[#111726]">
           <CatalogSection :initial-category="catalogInitialCategory" />
         </div>
       </template>
 
-      <!-- TAB: Como Funciona -->
+      <!-- TAB 4: Como Funciona (como-funciona) — Passo a passo e garantias -->
       <template v-else-if="activeTab === 'como-funciona'">
-        <div class="pt-20 sm:pt-24">
+        <div class="pt-16 sm:pt-20 bg-[#131A2B]">
           <HowItWorksSection @open-quote="openQuote" />
         </div>
       </template>
 
     </main>
 
-    <!-- Footer always visible -->
-    <FooterSection />
+    <!-- Footer with tab navigation -->
+    <FooterSection @navigate="navigateTo" />
 
     <!-- Interactive Quick Quote Builder Modal -->
     <QuoteModal :is-open="isQuoteModalOpen" @close="closeQuote" />

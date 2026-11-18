@@ -2,6 +2,8 @@
 import NexFormaLogo from './NexFormaLogo.vue'
 import { Instagram, MessageSquare, Globe2 } from 'lucide-vue-next'
 
+const emit = defineEmits(['navigate'])
+
 const currentYear = new Date().getFullYear()
 </script>
 
@@ -16,7 +18,13 @@ const currentYear = new Date().getFullYear()
         
         <!-- Col 1 & 2: Brand & About (2 cols) -->
         <div class="sm:col-span-2 space-y-4 sm:space-y-5">
-          <NexFormaLogo size="large" :show-tagline="true" />
+          <button 
+            type="button" 
+            @click="emit('navigate', 'home')"
+            class="text-left cursor-pointer"
+          >
+            <NexFormaLogo size="large" :show-tagline="true" />
+          </button>
           
           <p class="text-xs sm:text-sm text-slate-400 max-w-sm leading-relaxed">
             Dando forma às suas ideias, camada por camada. Soluções completas em fabricação digital aditiva: presentes personalizados, decoração, utilidades de setup e prototipagem industrial técnica.
@@ -63,37 +71,85 @@ const currentYear = new Date().getFullYear()
           </h4>
           <ul class="space-y-2 text-xs sm:text-sm">
             <li>
-              <a href="#hero" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Início</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'home')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Início
+              </button>
             </li>
             <li>
-              <a href="#solucoes" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Soluções</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'solucoes')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Soluções
+              </button>
             </li>
             <li>
-              <a href="#catalogo" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Catálogo de Projetos</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'catalogo')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Catálogo de Projetos
+              </button>
             </li>
             <li>
-              <a href="#como-funciona" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Como Funciona</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'como-funciona')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Como Funciona
+              </button>
             </li>
           </ul>
         </div>
 
-        <!-- Col 4: Soluções -->
+        <!-- Col 4: Soluções / Categorias -->
         <div class="space-y-3 sm:space-y-4">
           <h4 class="text-xs font-bold text-slate-200 uppercase tracking-widest font-['JetBrains_Mono']">
             Categorias
           </h4>
           <ul class="space-y-2 text-xs sm:text-sm">
             <li>
-              <a href="#solucoes" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Presentes Personalizados</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'catalogo', 'presentes')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Presentes Personalizados
+              </button>
             </li>
             <li>
-              <a href="#solucoes" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Decoração & Design</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'catalogo', 'decoracao')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Decoração & Design
+              </button>
             </li>
             <li>
-              <a href="#solucoes" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Peças Técnicas & Protótipos</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'catalogo', 'tecnicas')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Peças Técnicas & Protótipos
+              </button>
             </li>
             <li>
-              <a href="#solucoes" class="hover:text-cyan-400 transition-colors py-0.5 inline-block">Utilidades & Setup</a>
+              <button 
+                type="button" 
+                @click="emit('navigate', 'catalogo', 'setup')" 
+                class="hover:text-cyan-400 transition-colors py-0.5 cursor-pointer text-left"
+              >
+                Utilidades & Setup
+              </button>
             </li>
           </ul>
         </div>
