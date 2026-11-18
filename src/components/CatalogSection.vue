@@ -1,15 +1,17 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
+import { useProducts } from '../composables/useProducts'
 import { 
   MessageSquare, 
   Sparkles, 
   Heart, 
   ExternalLink, 
   Clock, 
-  Palette,
-  Info,
-  Search,
-  X
+  Palette, 
+  Info, 
+  Search, 
+  X,
+  CheckCircle2
 } from 'lucide-vue-next'
 import ProductSpecsModal from './ProductSpecsModal.vue'
 
@@ -19,6 +21,8 @@ const props = defineProps({
     default: 'todos'
   }
 })
+
+const { products } = useProducts()
 
 const selectedCategory = ref(props.initialCategory)
 const searchQuery = ref('')
@@ -52,221 +56,8 @@ const categories = [
   { id: 'setup', label: 'Setup & Utilidades' },
 ]
 
-const products = [
-  {
-    id: 1,
-    name: 'Vaso Escultural Voronoi Prism',
-    category: 'decoracao',
-    categoryLabel: 'Decoração & Design',
-    badge: 'Design Autoral',
-    description: 'Geometria fluida com favos orgânicos e acabamento acetinado. Adiciona sofisticação e leveza contemporânea a salas, estantes ou mesas de centro.',
-    highlight: 'Acabamento acetinado ao toque',
-    materialHighlight: 'PLA Silk Premium Perolado',
-    leadTimeBadge: 'Pronto em até 48h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 79,00',
-    svgType: 'vase',
-    specs: {
-      dimensions: '22 cm (Altura) x 13,5 cm (Largura) x 13,5 cm (Profundidade)',
-      weight: '190g',
-      materialAndFinish: 'PLA Silk Premium Perolado (toque acetinado suave com alto brilho reflexivo e 100% reciclável)',
-      colors: ['Prata Perolado', 'Preto Obsidian Fosco', 'Branco Mármore', 'Ciano Neon', 'Dourado Champanhe', 'Sob consulta'],
-      notes: 'Produção sob encomenda. Permite ajuste de escala personalizada (de 15cm até 32cm de altura) e impermeabilização interna para flores naturais com água.'
-    }
-  },
-  {
-    id: 2,
-    name: 'Luminária Lunar Moonlit 3D',
-    category: 'presentes',
-    categoryLabel: 'Presentes & Colecionáveis',
-    badge: 'Mais Desejada',
-    description: 'A serenidade da lua no seu quarto. Textura em relevo real dos mares e crateras lunares com luz suave e aconchegante sobre base de madeira maciça.',
-    highlight: 'LED suave bivolt com toque suave',
-    materialHighlight: 'Translúcido + Base Madeira',
-    leadTimeBadge: 'Pronto em até 48h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 129,00',
-    svgType: 'moon',
-    specs: {
-      dimensions: 'Esfera Ø 15 cm | Altura total com base: 19 cm',
-      weight: '245g (esfera lunar + base em madeira)',
-      materialAndFinish: 'PLA Branco Translúcido de Alta Difusão + Base geométrica em madeira maciça nobre tratada',
-      colors: ['Luz Branca Quente Aconchegante (3000K)', 'Luz Neutra (4000K)', 'LED RGB Multicores (sob encomenda)'],
-      notes: 'Acompanha cabo de alimentação USB e módulo LED touch bivolt de baixo consumo. Textura em relevo tridimensional fiel aos dados topográficos da NASA.'
-    }
-  },
-  {
-    id: 3,
-    name: 'Suporte Minimalista para Headphone',
-    category: 'setup',
-    categoryLabel: 'Setup & Utilidades',
-    badge: 'Elegância & Ergonomia',
-    description: 'Linhas curvas contínuas que abraçam a headband do seu fone sem marcar a espuma. Deixa sua mesa visualmente limpa, organizada e moderna.',
-    highlight: 'Canaleta oculta para cabo',
-    materialHighlight: 'PETG Matte Anti-Risco',
-    leadTimeBadge: 'Pronto em 24h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 68,00',
-    svgType: 'headphone',
-    specs: {
-      dimensions: '26 cm (Altura) x 14 cm (Largura) x 12 cm (Profundidade)',
-      weight: '210g (base com peso de estabilização e grip antiderrapante)',
-      materialAndFinish: 'PETG Industrial Matte (alta resistência estrutural, tenacidade e acabamento anti-risco)',
-      colors: ['Preto Carbono Matte', 'Cinza Chumbo', 'Branco Gelo', 'Preto com Friso Ciano Neon'],
-      notes: 'Apoio superior curvo ergonômico que não deforma a almofada do fone. Inclui canaleta traseira inteligente para retenção do cabo de áudio.'
-    }
-  },
-  {
-    id: 4,
-    name: 'Kit Organizador Hexagonal de Mesa',
-    category: 'setup',
-    categoryLabel: 'Setup & Utilidades',
-    badge: 'Modular & Magnético',
-    description: 'Conjunto de 3 módulos que se conectam suavemente por imãs internos. O equilíbrio perfeito entre harmonia visual e funcionalidade no dia a dia.',
-    highlight: 'Encaixe magnético sutil',
-    materialHighlight: 'PLA Fosco Aveludado',
-    leadTimeBadge: 'Pronto em 48h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 89,00',
-    svgType: 'hex',
-    specs: {
-      dimensions: 'Módulo central: 10x9x9 cm | Módulos laterais: 6x9x9 cm (Área útil total: aprox. 22x18 cm)',
-      weight: '280g (conjunto com os 3 módulos inclusos)',
-      materialAndFinish: 'PLA Fosco Aveludado de Alta Densidade com ímãs de neodímio N52 embutidos',
-      colors: ['Preto Obsidian', 'Cinza Grafite', 'Branco Minimalista', 'Verde Militar', 'Ciano Accent'],
-      notes: 'Design modular autoral. Os módulos se atraem magneticamente e podem ser reorganizados livremente no setup conforme sua necessidade.'
-    }
-  },
-  {
-    id: 5,
-    name: 'Miniatura Samurai Shadow Articulada',
-    category: 'presentes',
-    categoryLabel: 'Presentes & Colecionáveis',
-    badge: 'Edição Especial',
-    description: 'Para quem ama detalhes minuciosos e peças com personalidade. Mais de 16 articulações firmes que permitem poses dinâmicas sobre a estante.',
-    highlight: 'Rica em microdetalhes',
-    materialHighlight: 'Resina 8K Ultra Definição',
-    leadTimeBadge: 'Pronto em 3 dias',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 139,00',
-    svgType: 'samurai',
-    specs: {
-      dimensions: '18 cm (Altura) x 9 cm (Largura) x 6 cm (Profundidade)',
-      weight: '140g',
-      materialAndFinish: 'Resina 8K Ultra Definição (detalhes de microescultura) + Juntas internas em ABS rígido autolubrificante',
-      colors: ['Cinza Primer Técnico (pronto para pintura)', 'Preto Shadow com Detalhes Ciano', 'Cobre Envelhecido'],
-      notes: 'Peça de colecionador com 16 articulações firmes (ball-joints). Acompanha par de katanas e base circular de exposição personalizada.'
-    }
-  },
-  {
-    id: 6,
-    name: 'Engrenagem & Peça Técnica de Engenharia',
-    category: 'tecnicas',
-    categoryLabel: 'Peças Técnicas',
-    badge: 'Sob Medida',
-    description: 'Solução sob medida para substituição de engrenagens desgastadas ou componentes mecânicos descontinuados, com encaixes exatos e alta resistência.',
-    highlight: 'Tolerância milimétrica ±0.05mm',
-    materialHighlight: 'Nylon Carbon (PA-CF)',
-    leadTimeBadge: 'Sob Demanda',
-    pricePrefix: 'Investimento',
-    priceValue: 'Sob Medida',
-    svgType: 'gear',
-    specs: {
-      dimensions: 'Totalmente personalizável (Padrão catálogo: Ø 85 mm x 24 mm com furo de chaveta Ø 12 mm)',
-      weight: '95g a 350g (variável conforme geometria e infill requisitado)',
-      materialAndFinish: 'Nylon com Fibra de Carbono (PA-CF) / PETG Reforçado / ABS Industrial',
-      colors: ['Preto Carbono Texturizado', 'Natural / Branco Técnico', 'Cinza Mecânico'],
-      notes: 'Projetada para tolerâncias mecânicas rigorosas de ±0.05 mm e resistência térmica contínua até 140°C. Envie seu arquivo STL/STEP ou peça física para reprodução.'
-    }
-  },
-  {
-    id: 7,
-    name: 'Placa Decorativa Letreiro 3D Personalizado',
-    category: 'presentes',
-    categoryLabel: 'Presentes & Colecionáveis',
-    badge: 'Feito sob medida',
-    description: 'Nome, logotipo ou frase especial esculpida em relevo tridimensional. Ideal para presentear alguém especial, decorar quartos ou destacar a identidade da sua mesa de trabalho.',
-    highlight: 'Relevo 3D de alta definição',
-    materialHighlight: 'PLA Premium Bicolor',
-    leadTimeBadge: 'Pronto em até 48h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 89,00',
-    svgType: 'signboard',
-    specs: {
-      dimensions: '25cm Largura x 8cm Altura x 2,5cm Profundidade (varia conforme o nome)',
-      weight: '140g',
-      materialAndFinish: 'PLA Premium Bicolor / Acabamento Acetinado (alta fidelidade e contraste visual)',
-      colors: ['Preto com Ciano Neon', 'Branco com Dourado', 'Cinza Chumbo', 'Cores sob consulta'],
-      notes: 'Personalização total de fonte, texto ou logotipo antes da produção. Enviamos prévia digital 3D para aprovação antes da impressão.'
-    }
-  },
-  {
-    id: 8,
-    name: 'Engrenagem & Componente Mecânico Sob Medida',
-    category: 'tecnicas',
-    categoryLabel: 'Peças Técnicas',
-    badge: 'Alta precisão milimétrica',
-    description: 'Reconstrução e impressão de peças de reposição, engrenagens, suportes estruturais e protótipos funcionais de alta resistência mecânica e térmica.',
-    highlight: 'Tolerância milimétrica rigorosa',
-    materialHighlight: 'PETG / ABS / Nylon Reforçado',
-    leadTimeBadge: 'Produção em 24h a 48h',
-    pricePrefix: 'Investimento',
-    priceValue: 'Sob Medida',
-    svgType: 'mechanical',
-    specs: {
-      dimensions: 'Conforme projeto técnico ou peça original enviada',
-      weight: 'Variável conforme preenchimento (Infill de 40% a 100%)',
-      materialAndFinish: 'PETG Industrial / ABS / Nylon Reforçado (alta resistência a tração, impacto e temperatura)',
-      colors: ['Preto Técnico', 'Cinza Industrial', 'Branco'],
-      notes: 'Envie foto com medidas ou arquivo STL/STEP pelo WhatsApp para avaliação técnica e cálculo estrutural.'
-    }
-  },
-  {
-    id: 9,
-    name: 'Organizador Modular de Mesa & Cabos',
-    category: 'setup',
-    categoryLabel: 'Setup & Utilidades',
-    badge: 'Design funcional',
-    description: 'Sistema inteligente com compartimentos para cartões SD, pendrives, canetas e canaletas ocultas para manter seu setup sempre limpo, organizado e produtivo.',
-    highlight: 'Gestão integrada de cabos',
-    materialHighlight: 'PLA Matte Fosco Antirrisco',
-    leadTimeBadge: 'Pronto em até 24h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 59,00',
-    svgType: 'cable-organizer',
-    specs: {
-      dimensions: '18cm Largura x 10cm Profundidade x 6cm Altura',
-      weight: '165g',
-      materialAndFinish: 'PLA Matte Fosco Antirrisco (toque aveludado resistente a marcas de dedos)',
-      colors: ['Preto Fosco', 'Grafite', 'Branco Minimalista'],
-      notes: 'Base com encaixe para pés antiderrapantes; módulos expansíveis com trilhos magnéticos.'
-    }
-  },
-  {
-    id: 10,
-    name: 'Escultura Geométrica Low-Poly Minimalista',
-    category: 'decoracao',
-    categoryLabel: 'Decoração & Design',
-    badge: 'Acabamento artístico',
-    description: 'Peça artística facetada com estética contemporânea que cria jogos únicos de luz e sombra em estantes, escritórios ou salas de estar.',
-    highlight: 'Facetas angulares esculturais',
-    materialHighlight: 'PLA Silk Metálico / Velvet Fosco',
-    leadTimeBadge: 'Pronto em até 48h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 95,00',
-    svgType: 'lowpoly',
-    specs: {
-      dimensions: '20cm Altura x 13cm Largura x 15cm Profundidade',
-      weight: '210g',
-      materialAndFinish: 'PLA Silk Metálico / Velvet Fosco (brilho sedoso com reflexão de estúdio)',
-      colors: ['Preto Ônix', 'Prata Metálico', 'Cobre', 'Branco Gelo'],
-      notes: 'Disponível em diversos temas (animais geométricos, bustos ou formas abstratas sob medida).'
-    }
-  }
-]
-
 const filteredProducts = computed(() => {
-  let list = products
+  let list = products.value
   // Category filter
   if (selectedCategory.value !== 'todos') {
     list = list.filter(p => p.category === selectedCategory.value)
@@ -276,8 +67,8 @@ const filteredProducts = computed(() => {
   if (q) {
     list = list.filter(p =>
       p.name.toLowerCase().includes(q) ||
-      p.materialHighlight.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
+      (p.materialHighlight || '').toLowerCase().includes(q) ||
+      (p.description || '').toLowerCase().includes(q) ||
       (p.specs?.materialAndFinish || '').toLowerCase().includes(q)
     )
   }
@@ -421,8 +212,16 @@ const getOrderLink = (productName) => {
 
               <!-- Vector Studio Illustrations with Depth & Warmth -->
               
+              <!-- Real photo if uploaded, otherwise procedural SVG -->
+              <img 
+                v-if="product.image_url" 
+                :src="product.image_url" 
+                :alt="product.name" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+
               <!-- 1. Vaso Escultural Helix -->
-              <svg v-if="product.svgType === 'vase'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
+              <svg v-else-if="product.svgType === 'vase'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
                 <defs>
                   <linearGradient id="vase-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#2D3B4F"/>
@@ -685,6 +484,28 @@ const getOrderLink = (productName) => {
           <div class="p-4 sm:p-6 pt-2">
             <div class="pt-3 sm:pt-4 border-t border-slate-700/40 space-y-2.5 sm:space-y-3">
               
+              <!-- Real-time Availability & Stock Badge -->
+              <div class="flex items-center justify-between text-[11px] font-['Space_Grotesk']">
+                <span 
+                  v-if="product.stock > 0"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 font-semibold text-[10px] sm:text-[11px]"
+                >
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  Em estoque ({{ product.stock }} un.)
+                </span>
+                <span 
+                  v-else
+                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700/60 text-[10px] sm:text-[11px]"
+                >
+                  <Clock class="w-3 h-3 text-cyan-400" />
+                  Sob encomenda
+                </span>
+
+                <span v-if="product.is_featured" class="text-amber-400 font-semibold flex items-center gap-1 text-[10px]">
+                  ★ Destaque
+                </span>
+              </div>
+
               <!-- Price in Evidence -->
               <div class="flex items-baseline justify-between mb-0.5">
                 <div class="flex flex-col">

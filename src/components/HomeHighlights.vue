@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { useProducts } from '../composables/useProducts'
 import { 
   Layers, 
   Cpu, 
@@ -18,6 +19,9 @@ import {
 } from 'lucide-vue-next'
 
 const emit = defineEmits(['open-quote', 'navigate'])
+
+// Dynamic products from Supabase with fallback
+const { featuredProducts } = useProducts()
 
 // 1. Social Proof Bar
 const proofMetrics = [
@@ -44,46 +48,6 @@ const proofMetrics = [
     value: '100% Sob Medida',
     label: 'Do Conceito à Impressão',
     sub: 'Com ou sem arquivo 3D pronto'
-  }
-]
-
-// 2. Weekly Featured Products (3 Selected Items)
-const featuredProducts = [
-  {
-    id: 1,
-    name: 'Vaso Escultural Voronoi Prism',
-    category: 'Decoração & Design',
-    badge: 'Design Autoral',
-    description: 'Geometria fluida com favos orgânicos e reflexo acetinado estúdio. Eleva a estética de salas, aparadores ou setups.',
-    material: 'PLA Silk Premium Perolado',
-    leadTime: 'Pronto em 48h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 79,00',
-    svgType: 'vase'
-  },
-  {
-    id: 3,
-    name: 'Suporte Minimalista para Headphone',
-    category: 'Setup & Utilidades',
-    badge: 'Elegância & Ergonomia',
-    description: 'Apoio curvo ergonômico que não deforma a espuma do fone, com canaleta inteligente para retenção de cabos.',
-    material: 'PETG Matte Anti-Risco',
-    leadTime: 'Pronto em 24h',
-    pricePrefix: 'A partir de',
-    priceValue: 'R$ 68,00',
-    svgType: 'headphone'
-  },
-  {
-    id: 6,
-    name: 'Engrenagem & Peça Técnica',
-    category: 'Peças Técnicas',
-    badge: 'Alta Resistência',
-    description: 'Substituição de peças desgastadas ou componentes descontinuados com tolerâncias rigorosas para engenharia mecânica.',
-    material: 'Nylon Carbon (PA-CF) / PETG',
-    leadTime: 'Sob Demanda',
-    pricePrefix: 'Investimento',
-    priceValue: 'Sob Medida',
-    svgType: 'gear'
   }
 ]
 
@@ -213,8 +177,16 @@ const getOrderLink = (productName) => {
               <div class="absolute inset-0 bg-radial from-cyan-500/8 via-transparent to-transparent opacity-40 group-hover:opacity-80 transition-opacity"></div>
               <div class="absolute bottom-4 w-36 h-6 bg-black/60 rounded-full blur-md"></div>
 
+              <!-- Real photo if uploaded, otherwise procedural SVG -->
+              <img 
+                v-if="item.image_url" 
+                :src="item.image_url" 
+                :alt="item.name" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+
               <!-- 1. Vaso -->
-              <svg v-if="item.svgType === 'vase'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-40 sm:h-40 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105">
+              <svg v-else-if="item.svgType === 'vase'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-40 sm:h-40 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105">
                 <defs>
                   <linearGradient id="home-vase-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#2D3B4F"/>

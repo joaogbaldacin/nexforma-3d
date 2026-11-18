@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Navbar from './components/Navbar.vue'
 import HeroSection from './components/HeroSection.vue'
 import HomeHighlights from './components/HomeHighlights.vue'
@@ -8,10 +8,14 @@ import CatalogSection from './components/CatalogSection.vue'
 import HowItWorksSection from './components/HowItWorksSection.vue'
 import FooterSection from './components/FooterSection.vue'
 import QuoteModal from './components/QuoteModal.vue'
+import AdminPanel from './components/AdminPanel.vue'
+import { useProducts } from './composables/useProducts'
 import { MessageSquare } from 'lucide-vue-next'
 
+const { fetchProducts } = useProducts()
+
 const isQuoteModalOpen = ref(false)
-// Tab navigation state — 'home' | 'solucoes' | 'catalogo' | 'como-funciona'
+// Tab navigation state — 'home' | 'solucoes' | 'catalogo' | 'como-funciona' | 'admin'
 const activeTab = ref('home')
 // Pre-selected catalog category when navigating from Solutions cards or highlights
 const catalogInitialCategory = ref('todos')
@@ -31,20 +35,32 @@ const navigateTo = (tab, category = 'todos') => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+// Check URL parameters on mounted for admin access
+onMounted(() => {
+  fetchProducts()
+  
+  const searchParams = new URLSearchParams(window.location.search)
+  if (searchParams.get('admin') === 'true' || window.location.hash === '#admin') {
+    activeTab.value = 'admin'
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+})
+
 const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
 </script>
 
 <template>
   <div class="min-h-screen bg-[#111726] text-[#F3F4F6] flex flex-col font-['Inter'] relative selection:bg-cyan-500/40 selection:text-white overflow-x-hidden">
     
-    <!-- Navbar: receives active tab and emits navigation events -->
+    <!-- Navbar: visible only on public customer-facing tabs -->
     <Navbar
+      v-if="activeTab !== 'admin'"
       :active-tab="activeTab"
       @open-quote="openQuote"
       @navigate="navigateTo"
     />
 
-    <!-- Main Content: conditional tab rendering (4 independent tabs) -->
+    <!-- Main Content: conditional tab rendering (4 public tabs + 1 admin panel) -->
     <main class="flex-grow">
 
       <!-- TAB 1: Início (home) — Landing page completa de alta conversão -->
@@ -74,16 +90,22 @@ const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURICompon
         </div>
       </template>
 
+      <!-- TAB 5: Painel Administrativo Restrito (admin) -->
+      <template v-else-if="activeTab === 'admin'">
+        <AdminPanel @navigate="navigateTo" />
+      </template>
+
     </main>
 
-    <!-- Footer with tab navigation -->
-    <FooterSection @navigate="navigateTo" />
+    <!-- Footer with tab navigation (visible on public tabs) -->
+    <FooterSection v-if="activeTab !== 'admin'" @navigate="navigateTo" />
 
     <!-- Interactive Quick Quote Builder Modal -->
     <QuoteModal :is-open="isQuoteModalOpen" @close="closeQuote" />
 
-    <!-- Floating WhatsApp Action Button -->
+    <!-- Floating WhatsApp Action Button (visible on public tabs) -->
     <a 
+      v-if="activeTab !== 'admin'"
       :href="WHATSAPP_FLOAT_URL" 
       target="_blank" 
       rel="noopener noreferrer"

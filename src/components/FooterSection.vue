@@ -1,6 +1,6 @@
 <script setup>
 import NexFormaLogo from './NexFormaLogo.vue'
-import { Instagram, MessageSquare, Globe2 } from 'lucide-vue-next'
+import { Instagram, MessageSquare, Globe2, Lock } from 'lucide-vue-next'
 
 const emit = defineEmits(['navigate'])
 
@@ -173,11 +173,21 @@ const currentYear = new Date().getFullYear()
 
       </div>
 
-      <!-- Bottom Bar: Perfectly Centered Copyright -->
-      <div class="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-slate-700/40 text-center">
+      <!-- Bottom Bar: Centered Copyright & Discrete Admin Link -->
+      <div class="mt-10 sm:mt-16 pt-6 sm:pt-8 border-t border-slate-700/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
         <p class="text-[11px] sm:text-xs font-['JetBrains_Mono'] text-slate-500">
           © {{ currentYear }} <strong class="text-slate-200 font-semibold">NexForma.3D</strong>. Todos os direitos reservados.
         </p>
+
+        <button 
+          type="button" 
+          @click="emit('navigate', 'admin')"
+          class="text-[10px] text-slate-600 hover:text-cyan-400 transition-colors flex items-center gap-1.5 font-['JetBrains_Mono'] cursor-pointer py-1"
+          title="Acesso exclusivo ao painel administrativo"
+        >
+          <Lock class="w-3 h-3" />
+          <span>Área Restrita / Admin</span>
+        </button>
       </div>
 
     </div>

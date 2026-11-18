@@ -1,0 +1,742 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { useProducts } from '../composables/useProducts'
+import { 
+  Lock, 
+  Mail, 
+  Key, 
+  LogOut, 
+  ArrowLeft, 
+  Plus, 
+  Sparkles, 
+  Star, 
+  Trash2, 
+  Edit3, 
+  Check, 
+  X, 
+  Package, 
+  AlertCircle, 
+  Search, 
+  Layers, 
+  ExternalLink,
+  ShieldCheck,
+  TrendingUp,
+  Boxes
+} from 'lucide-vue-next'
+
+const emit = defineEmits(['navigate'])
+
+const { 
+  products, 
+  loading, 
+  isLoadedFromDb, 
+  updateStock, 
+  toggleFeatured, 
+  updatePrice, 
+  addProduct, 
+  updateProduct, 
+  deleteProduct,
+  fetchProducts
+} = useProducts()
+
+// Auth State
+const session = ref(null)
+const isDemoMode = ref(false)
+const email = ref('')
+const password = ref('')
+const authLoading = ref(false)
+const authError = ref('')
+
+// Check Supabase session on mount
+onMounted(async () => {
+  fetchProducts()
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data } = await supabase.auth.getSession()
+      session.value = data?.session || null
+
+      supabase.auth.onAuthStateChange((_event, newSession) => {
+        session.value = newSession
+      })
+    } catch (e) {
+      console.warn('Erro ao verificar sessão Supabase:', e)
+    }
+  }
+})
+
+const isAuthenticated = computed(() => {
+  return Boolean(session.value) || isDemoMode.value
+})
+
+const handleLogin = async () => {
+  authError.value = ''
+
+  if (!isSupabaseConfigured || !supabase) {
+    authError.value = 'Chaves do Supabase não configuradas no arquivo .env.local. Você pode usar o Modo Demonstração abaixo.'
+    return
+  }
+
+  if (!email.value || !password.value) {
+    authError.value = 'Preencha o e-mail e a senha.'
+    return
+  }
+
+  authLoading.value = true
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email.value.trim(),
+      password: password.value
+    })
+
+    if (error) {
+      authError.value = error.message === 'Invalid login credentials' 
+        ? 'E-mail ou senha inválidos.' 
+        : error.message
+    } else {
+      session.value = data.session
+      fetchProducts()
+    }
+  } catch (e) {
+    authError.value = 'Erro ao conectar ao Supabase: ' + e.message
+  } finally {
+    authLoading.value = false
+  }
+}
+
+const handleLogout = async () => {
+  if (supabase && session.value) {
+    await supabase.auth.signOut()
+  }
+  session.value = null
+  isDemoMode.value = false
+}
+
+// Search inside admin
+const adminSearch = ref('')
+const filteredAdminProducts = computed(() => {
+  const q = adminSearch.value.trim().toLowerCase()
+  if (!q) return products.value
+  return products.value.filter(p => 
+    p.name.toLowerCase().includes(q) || 
+    (p.category || '').toLowerCase().includes(q) ||
+    (p.materialHighlight || '').toLowerCase().includes(q)
+  )
+})
+
+// Metrics
+const totalStock = computed(() => products.value.reduce((acc, p) => acc + (p.stock || 0), 0))
+const featuredCount = computed(() => products.value.filter(p => p.is_featured).length)
+const outOfStockCount = computed(() => products.value.filter(p => p.stock === 0).length)
+
+// Add / Edit Product Modal state
+const isFormOpen = ref(false)
+const isEditing = ref(false)
+const editingId = ref(null)
+
+const form = ref({
+  name: '',
+  category: 'decoracao',
+  description: '',
+  material: 'PLA Silk Premium',
+  dimensions: '20 x 15 x 15 cm',
+  price: 79,
+  stock: 5,
+  is_featured: false,
+  image_url: ''
+})
+
+const openAddModal = () => {
+  isEditing.value = false
+  editingId.value = null
+  form.value = {
+    name: '',
+    category: 'decoracao',
+    description: '',
+    material: 'PLA Silk Premium',
+    dimensions: '20 x 15 x 15 cm',
+    price: 79,
+    stock: 5,
+    is_featured: false,
+    image_url: ''
+  }
+  isFormOpen.value = true
+}
+
+const openEditModal = (product) => {
+  isEditing.value = true
+  editingId.value = product.id
+  form.value = {
+    name: product.name,
+    category: product.category,
+    description: product.description,
+    material: product.materialHighlight || product.material || 'PLA Premium',
+    dimensions: product.specs?.dimensions || 'Sob medida',
+    price: product.price || 0,
+    stock: product.stock || 0,
+    is_featured: product.is_featured || false,
+    image_url: product.image_url || ''
+  }
+  isFormOpen.value = true
+}
+
+const handleSaveProduct = async () => {
+  if (!form.value.name.trim()) return
+
+  if (isEditing.value && editingId.value) {
+    await updateProduct(editingId.value, {
+      name: form.value.name,
+      category: form.value.category,
+      description: form.value.description,
+      materialHighlight: form.value.material,
+      material: form.value.material,
+      dimensions: form.value.dimensions,
+      price: parseFloat(form.value.price) || 0,
+      stock: parseInt(form.value.stock) || 0,
+      is_featured: form.value.is_featured,
+      image_url: form.value.image_url
+    })
+  } else {
+    await addProduct({
+      name: form.value.name,
+      category: form.value.category,
+      description: form.value.description,
+      materialHighlight: form.value.material,
+      material: form.value.material,
+      dimensions: form.value.dimensions,
+      price: parseFloat(form.value.price) || 0,
+      stock: parseInt(form.value.stock) || 0,
+      is_featured: form.value.is_featured,
+      image_url: form.value.image_url
+    })
+  }
+
+  isFormOpen.value = false
+}
+
+const handleDelete = async (product) => {
+  if (confirm(`Tem certeza que deseja excluir "${product.name}"?`)) {
+    await deleteProduct(product.id)
+  }
+}
+
+// Inline price edit
+const editingPriceId = ref(null)
+const tempPrice = ref(0)
+
+const startEditPrice = (product) => {
+  editingPriceId.value = product.id
+  tempPrice.value = product.price || 0
+}
+
+const savePrice = async (id) => {
+  await updatePrice(id, parseFloat(tempPrice.value) || 0)
+  editingPriceId.value = null
+}
+</script>
+
+<template>
+  <div class="min-h-screen bg-[#111726] text-[#F3F4F6] py-12 px-4 sm:px-6 lg:px-8">
+    
+    <!-- 1. TELA DE LOGIN (quando não autenticado) -->
+    <div v-if="!isAuthenticated" class="max-w-md mx-auto pt-10 sm:pt-16">
+      
+      <!-- Back button -->
+      <button 
+        type="button" 
+        @click="emit('navigate', 'home')"
+        class="inline-flex items-center gap-2 text-xs sm:text-sm text-slate-400 hover:text-cyan-400 transition-colors mb-6 cursor-pointer"
+      >
+        <ArrowLeft class="w-4 h-4" />
+        <span>Voltar para o site</span>
+      </button>
+
+      <div class="rounded-3xl bg-slate-800/80 border border-slate-700/60 p-6 sm:p-8 backdrop-blur-xl shadow-2xl shadow-black/50">
+        
+        <!-- Header -->
+        <div class="text-center space-y-2 mb-8">
+          <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/25 flex items-center justify-center text-cyan-400 mx-auto">
+            <Lock class="w-6 h-6" />
+          </div>
+          <h2 class="text-2xl font-bold font-['Space_Grotesk'] text-white">
+            Acesso Administrativo
+          </h2>
+          <p class="text-xs text-slate-400">
+            Painel de controle interno da <strong>NexForma.3D</strong>
+          </p>
+        </div>
+
+        <!-- Login Form -->
+        <form @submit.prevent="handleLogin" class="space-y-4">
+          
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5 font-['JetBrains_Mono']">
+              E-mail
+            </label>
+            <div class="relative">
+              <Mail class="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
+              <input 
+                v-model="email"
+                type="email"
+                placeholder="seu-email@exemplo.com"
+                required
+                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/60 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5 font-['JetBrains_Mono']">
+              Senha
+            </label>
+            <div class="relative">
+              <Key class="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
+              <input 
+                v-model="password"
+                type="password"
+                placeholder="••••••••"
+                required
+                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700/60 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition-colors"
+              />
+            </div>
+          </div>
+
+          <!-- Error Alert -->
+          <div v-if="authError" class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-300 flex items-start gap-2">
+            <AlertCircle class="w-4 h-4 shrink-0 text-red-400 mt-0.5" />
+            <span>{{ authError }}</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            :disabled="authLoading"
+            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            <span v-if="authLoading">Autenticando...</span>
+            <span v-else>Entrar no Painel</span>
+          </button>
+        </form>
+
+        <!-- Demo Mode Shortcut (If Supabase not yet configured or testing) -->
+        <div class="mt-8 pt-6 border-t border-slate-700/40 text-center space-y-3">
+          <p class="text-[11px] text-slate-400">
+            Ainda não colou as chaves do Supabase?
+          </p>
+          <button
+            type="button"
+            @click="isDemoMode = true"
+            class="text-xs text-cyan-400 hover:text-cyan-300 font-medium underline underline-offset-4 cursor-pointer"
+          >
+            Acessar no Modo Demonstração (Local) →
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 2. DASHBOARD ADMINISTRATIVO (quando autenticado) -->
+    <div v-else class="max-w-7xl mx-auto space-y-8">
+      
+      <!-- Top Action Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-6 rounded-2xl bg-slate-800/80 border border-slate-700/60 backdrop-blur-md">
+        
+        <div class="flex items-center gap-3">
+          <button 
+            type="button" 
+            @click="emit('navigate', 'home')"
+            class="p-2 rounded-xl bg-slate-900/80 border border-slate-700/50 hover:border-cyan-400 text-slate-300 hover:text-cyan-400 transition-colors cursor-pointer"
+            title="Voltar ao site"
+          >
+            <ArrowLeft class="w-5 h-5" />
+          </button>
+          
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-xl sm:text-2xl font-bold font-['Space_Grotesk'] text-white">
+                Painel Administrativo
+              </h1>
+              <span 
+                class="px-2.5 py-0.5 rounded-full text-[10px] font-['JetBrains_Mono'] border"
+                :class="isLoadedFromDb ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30'"
+              >
+                {{ isLoadedFromDb ? 'Supabase Conectado' : 'Modo Demonstração' }}
+              </span>
+            </div>
+            <p class="text-xs text-slate-400">
+              Gerencie estoque em tempo real, preços, destaques e novos modelos.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 self-end sm:self-auto">
+          <button
+            type="button"
+            @click="openAddModal"
+            class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md cursor-pointer active:scale-95 transition-all"
+          >
+            <Plus class="w-4 h-4" />
+            <span>Novo Produto</span>
+          </button>
+
+          <button
+            type="button"
+            @click="handleLogout"
+            class="px-3.5 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 border border-slate-700/50 hover:border-red-400/50 text-slate-300 hover:text-red-400 text-xs sm:text-sm flex items-center gap-1.5 transition-colors cursor-pointer"
+          >
+            <LogOut class="w-4 h-4" />
+            <span>Sair</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <div class="p-4 sm:p-5 rounded-2xl bg-slate-800/60 border border-slate-700/50 space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Total Cadastrados</span>
+            <Package class="w-4 h-4 text-cyan-400" />
+          </div>
+          <p class="text-2xl font-bold font-['Space_Grotesk'] text-white">
+            {{ products.length }}
+          </p>
+          <span class="text-[10px] text-slate-500">Modelos no catálogo</span>
+        </div>
+
+        <div class="p-4 sm:p-5 rounded-2xl bg-slate-800/60 border border-slate-700/50 space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Destaques da Semana</span>
+            <Star class="w-4 h-4 text-amber-400 fill-current" />
+          </div>
+          <p class="text-2xl font-bold font-['Space_Grotesk'] text-amber-400">
+            {{ featuredCount }}
+          </p>
+          <span class="text-[10px] text-slate-500">Exibidos na Home</span>
+        </div>
+
+        <div class="p-4 sm:p-5 rounded-2xl bg-slate-800/60 border border-slate-700/50 space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Estoque Físico Total</span>
+            <Boxes class="w-4 h-4 text-emerald-400" />
+          </div>
+          <p class="text-2xl font-bold font-['Space_Grotesk'] text-emerald-400">
+            {{ totalStock }} un.
+          </p>
+          <span class="text-[10px] text-slate-500">Prontos para envio</span>
+        </div>
+
+        <div class="p-4 sm:p-5 rounded-2xl bg-slate-800/60 border border-slate-700/50 space-y-1">
+          <div class="flex items-center justify-between text-slate-400 text-xs">
+            <span>Sob Encomenda</span>
+            <AlertCircle class="w-4 h-4 text-cyan-400" />
+          </div>
+          <p class="text-2xl font-bold font-['Space_Grotesk'] text-slate-300">
+            {{ outOfStockCount }}
+          </p>
+          <span class="text-[10px] text-slate-500">Estoque zero (produção 48h)</span>
+        </div>
+
+      </div>
+
+      <!-- Products Management Table / List -->
+      <div class="rounded-3xl bg-slate-800/70 border border-slate-700/60 overflow-hidden shadow-xl">
+        
+        <!-- Table Header & Search -->
+        <div class="p-5 sm:p-6 border-b border-slate-700/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="text-lg font-bold font-['Space_Grotesk'] text-white">
+              Lista de Produtos & Estoque
+            </h3>
+            <p class="text-xs text-slate-400">
+              Ajuste quantidades ou ative os Destaques com 1 clique.
+            </p>
+          </div>
+
+          <div class="relative w-full sm:w-72">
+            <Search class="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
+            <input 
+              v-model="adminSearch"
+              type="text"
+              placeholder="Buscar modelo..."
+              class="w-full pl-9 pr-3 py-2 rounded-xl bg-slate-900/80 border border-slate-700/50 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+        </div>
+
+        <!-- Products List -->
+        <div class="divide-y divide-slate-700/40 overflow-x-auto">
+          <div 
+            v-for="p in filteredAdminProducts" 
+            :key="p.id"
+            class="p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-slate-700/20 transition-colors"
+          >
+            <!-- Product Info -->
+            <div class="flex items-center gap-3.5 flex-1 min-w-[240px]">
+              <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-700/50 flex items-center justify-center shrink-0 overflow-hidden text-cyan-400">
+                <img v-if="p.image_url" :src="p.image_url" :alt="p.name" class="w-full h-full object-cover" />
+                <Package v-else class="w-6 h-6" />
+              </div>
+
+              <div class="space-y-1">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h4 class="font-bold text-sm sm:text-base text-white">
+                    {{ p.name }}
+                  </h4>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-slate-900 text-slate-400 border border-slate-700/50">
+                    {{ p.categoryLabel || p.category }}
+                  </span>
+                </div>
+                <p class="text-xs text-slate-400 line-clamp-1 max-w-md">
+                  {{ p.description }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Quick Controls Cluster -->
+            <div class="flex items-center gap-4 sm:gap-6 flex-wrap self-end md:self-auto">
+              
+              <!-- 1. Star / Featured Toggle -->
+              <button
+                type="button"
+                @click="toggleFeatured(p.id)"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold cursor-pointer transition-all active:scale-95"
+                :class="p.is_featured 
+                  ? 'bg-amber-500/15 border-amber-500/40 text-amber-400' 
+                  : 'bg-slate-900/60 border-slate-700/50 text-slate-500 hover:text-slate-300'"
+                :title="p.is_featured ? 'Remover dos Destaques da Home' : 'Destacar na Página Inicial'"
+              >
+                <Star class="w-3.5 h-3.5" :class="{ 'fill-current': p.is_featured }" />
+                <span class="hidden sm:inline">{{ p.is_featured ? 'Destaque' : 'Comum' }}</span>
+              </button>
+
+              <!-- 2. Stock Controls (- / +) -->
+              <div class="flex items-center gap-2 bg-slate-900/80 border border-slate-700/50 rounded-xl p-1">
+                <button
+                  type="button"
+                  @click="updateStock(p.id, -1)"
+                  class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center font-bold text-xs cursor-pointer active:scale-95"
+                  title="Diminuir estoque"
+                >
+                  -
+                </button>
+                
+                <span class="text-xs font-bold font-['Space_Grotesk'] px-2 min-w-[50px] text-center" :class="p.stock > 0 ? 'text-emerald-400' : 'text-slate-500'">
+                  {{ p.stock }} un.
+                </span>
+
+                <button
+                  type="button"
+                  @click="updateStock(p.id, 1)"
+                  class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-400 flex items-center justify-center font-bold text-xs cursor-pointer active:scale-95"
+                  title="Aumentar estoque"
+                >
+                  +
+                </button>
+              </div>
+
+              <!-- 3. Price Quick Edit -->
+              <div class="min-w-[110px] text-right">
+                <div v-if="editingPriceId === p.id" class="flex items-center gap-1">
+                  <input 
+                    v-model="tempPrice" 
+                    type="number" 
+                    step="0.5" 
+                    class="w-16 px-1.5 py-1 text-xs bg-slate-900 rounded border border-cyan-400 text-white text-right"
+                  />
+                  <button @click="savePrice(p.id)" class="p-1 text-emerald-400 hover:text-emerald-300">
+                    <Check class="w-3.5 h-3.5" />
+                  </button>
+                  <button @click="editingPriceId = null" class="p-1 text-slate-500 hover:text-slate-300">
+                    <X class="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                <div v-else @click="startEditPrice(p)" class="cursor-pointer group flex items-center justify-end gap-1">
+                  <span class="text-sm font-bold font-['Space_Grotesk'] text-white group-hover:text-cyan-400 transition-colors">
+                    {{ p.priceValue }}
+                  </span>
+                  <Edit3 class="w-3 h-3 text-slate-600 group-hover:text-cyan-400" />
+                </div>
+              </div>
+
+              <!-- 4. Edit & Delete Action Buttons -->
+              <div class="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  @click="openEditModal(p)"
+                  class="p-2 rounded-lg bg-slate-900/60 hover:bg-slate-900 text-slate-400 hover:text-cyan-400 border border-slate-700/40 transition-colors cursor-pointer"
+                  title="Editar dados completos"
+                >
+                  <Edit3 class="w-4 h-4" />
+                </button>
+
+                <button
+                  type="button"
+                  @click="handleDelete(p)"
+                  class="p-2 rounded-lg bg-slate-900/60 hover:bg-slate-900 text-slate-400 hover:text-red-400 border border-slate-700/40 transition-colors cursor-pointer"
+                  title="Excluir produto"
+                >
+                  <Trash2 class="w-4 h-4" />
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 3. MODAL DE CADASTRO / EDIÇÃO DE PRODUTO -->
+    <div 
+      v-if="isFormOpen" 
+      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#0B0D10]/85 backdrop-blur-md overflow-y-auto"
+    >
+      <div class="relative w-full max-w-xl rounded-3xl bg-slate-800 border border-slate-700/60 shadow-2xl p-6 sm:p-8 space-y-5 my-8">
+        
+        <div class="flex items-center justify-between border-b border-slate-700/50 pb-4">
+          <h3 class="text-lg font-bold font-['Space_Grotesk'] text-white">
+            {{ isEditing ? 'Editar Produto' : 'Cadastrar Novo Produto' }}
+          </h3>
+          <button 
+            type="button" 
+            @click="isFormOpen = false"
+            class="text-slate-400 hover:text-white cursor-pointer"
+          >
+            <X class="w-5 h-5" />
+          </button>
+        </div>
+
+        <form @submit.prevent="handleSaveProduct" class="space-y-4">
+          
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
+              Nome do Modelo / Produto *
+            </label>
+            <input 
+              v-model="form.name"
+              type="text" 
+              required
+              placeholder="Ex: Luminária Voronoi LED"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
+                Categoria
+              </label>
+              <select 
+                v-model="form.category"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
+              >
+                <option value="decoracao">Decoração & Design</option>
+                <option value="presentes">Presentes & Colecionáveis</option>
+                <option value="tecnicas">Peças Técnicas</option>
+                <option value="setup">Setup & Utilidades</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
+                Preço (R$)
+              </label>
+              <input 
+                v-model="form.price"
+                type="number"
+                step="0.5"
+                placeholder="79.00"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
+                Estoque Inicial (un.)
+              </label>
+              <input 
+                v-model="form.stock"
+                type="number"
+                min="0"
+                placeholder="5"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
+              />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
+                Material Recomendado
+              </label>
+              <input 
+                v-model="form.material"
+                type="text"
+                placeholder="PLA Silk / PETG"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
+              Descrição do Produto
+            </label>
+            <textarea 
+              v-model="form.description"
+              rows="2"
+              placeholder="Breve descrição dos benefícios e design da peça..."
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
+            ></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
+              URL da Imagem / Foto (Opcional)
+            </label>
+            <input 
+              v-model="form.image_url"
+              type="url"
+              placeholder="https://sua-imagem.com/foto.jpg"
+              class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
+            />
+          </div>
+
+          <div class="flex items-center gap-2 pt-2">
+            <input 
+              v-model="form.is_featured"
+              id="is_featured"
+              type="checkbox"
+              class="w-4 h-4 rounded text-cyan-400 bg-slate-900 border-slate-700"
+            />
+            <label for="is_featured" class="text-xs text-slate-300 cursor-pointer">
+              Exibir como <strong>Destaque da Semana</strong> na Página Inicial
+            </label>
+          </div>
+
+          <div class="pt-4 flex items-center justify-end gap-3 border-t border-slate-700/50">
+            <button
+              type="button"
+              @click="isFormOpen = false"
+              class="px-4 py-2.5 rounded-xl bg-slate-900 text-slate-400 hover:text-white text-xs font-semibold cursor-pointer"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-xs sm:text-sm shadow-md cursor-pointer"
+            >
+              Salvar Alterações
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+</template>
