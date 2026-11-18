@@ -14,7 +14,7 @@ import {
   Terminal
 } from 'lucide-vue-next'
 
-const emit = defineEmits(['open-quote'])
+const emit = defineEmits(['open-quote', 'navigate'])
 
 const WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
 

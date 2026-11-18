@@ -10,6 +10,10 @@ import QuoteModal from './components/QuoteModal.vue'
 import { MessageSquare } from 'lucide-vue-next'
 
 const isQuoteModalOpen = ref(false)
+// Tab navigation state — 'home' | 'catalogo' | 'como-funciona'
+const activeTab = ref('home')
+// Pre-selected catalog category when navigating from Solutions cards
+const catalogInitialCategory = ref('todos')
 
 const openQuote = () => {
   isQuoteModalOpen.value = true
@@ -19,37 +23,59 @@ const closeQuote = () => {
   isQuoteModalOpen.value = false
 }
 
+// Navigate to a tab and always scroll to top
+const navigateTo = (tab, category = 'todos') => {
+  activeTab.value = tab
+  catalogInitialCategory.value = category
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
 </script>
 
 <template>
   <div class="min-h-screen bg-[#111726] text-[#F3F4F6] flex flex-col font-['Inter'] relative selection:bg-cyan-500/40 selection:text-white overflow-x-hidden">
     
-    <!-- Navbar -->
-    <Navbar @open-quote="openQuote" />
+    <!-- Navbar: receives active tab and emits navigation events -->
+    <Navbar
+      :active-tab="activeTab"
+      @open-quote="openQuote"
+      @navigate="navigateTo"
+    />
 
-    <!-- Main Content -->
+    <!-- Main Content: conditional tab rendering -->
     <main class="flex-grow">
-      <!-- Hero Section -->
-      <HeroSection @open-quote="openQuote" />
 
-      <!-- Categories & Solutions -->
-      <SolutionsSection @open-quote="openQuote" />
+      <!-- TAB: Início (home) -->
+      <template v-if="activeTab === 'home'">
+        <HeroSection @open-quote="openQuote" @navigate="navigateTo" />
+        <SolutionsSection @open-quote="openQuote" @navigate="navigateTo" />
+      </template>
 
-      <!-- Catalog Showcase -->
-      <CatalogSection />
+      <!-- TAB: Catálogo -->
+      <template v-else-if="activeTab === 'catalogo'">
+        <!-- top padding compensates the fixed navbar -->
+        <div class="pt-20 sm:pt-24">
+          <CatalogSection :initial-category="catalogInitialCategory" />
+        </div>
+      </template>
 
-      <!-- How it Works (3 Steps) -->
-      <HowItWorksSection @open-quote="openQuote" />
+      <!-- TAB: Como Funciona -->
+      <template v-else-if="activeTab === 'como-funciona'">
+        <div class="pt-20 sm:pt-24">
+          <HowItWorksSection @open-quote="openQuote" />
+        </div>
+      </template>
+
     </main>
 
-    <!-- Footer -->
+    <!-- Footer always visible -->
     <FooterSection />
 
     <!-- Interactive Quick Quote Builder Modal -->
     <QuoteModal :is-open="isQuoteModalOpen" @close="closeQuote" />
 
-    <!-- Floating WhatsApp Action Button (Touch-optimized for Mobile) -->
+    <!-- Floating WhatsApp Action Button -->
     <a 
       :href="WHATSAPP_FLOAT_URL" 
       target="_blank" 

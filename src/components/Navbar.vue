@@ -3,16 +3,24 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import NexFormaLogo from './NexFormaLogo.vue'
 import { Menu, X, MessageSquare, Instagram, ChevronRight } from 'lucide-vue-next'
 
-const emit = defineEmits(['open-quote'])
+const props = defineProps({
+  activeTab: {
+    type: String,
+    default: 'home'
+  }
+})
+
+const emit = defineEmits(['open-quote', 'navigate'])
 
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
 
+// Tab-aware navigation items
 const navLinks = [
-  { name: 'Início', href: '#hero' },
-  { name: 'Soluções', href: '#solucoes' },
-  { name: 'Catálogo', href: '#catalogo' },
-  { name: 'Como Funciona', href: '#como-funciona' },
+  { name: 'Início',       tab: 'home',           scrollTo: null },
+  { name: 'Soluções',     tab: 'home',           scrollTo: 'solucoes' },
+  { name: 'Catálogo',     tab: 'catalogo',       scrollTo: null },
+  { name: 'Como Funciona',tab: 'como-funciona',  scrollTo: null },
 ]
 
 const handleScroll = () => {
@@ -31,6 +39,36 @@ const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
 }
 
+// Main navigation handler
+const handleNav = (link) => {
+  closeMobileMenu()
+  if (link.scrollTo) {
+    // "Soluções": ensure home tab is active, then scroll to anchor
+    if (props.activeTab !== 'home') {
+      emit('navigate', 'home')
+      // After Vue reacts, scroll to #solucoes
+      setTimeout(() => {
+        const el = document.getElementById(link.scrollTo)
+        if (el) el.scrollIntoView({ behavior: 'smooth' })
+      }, 80)
+    } else {
+      const el = document.getElementById(link.scrollTo)
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
+  } else {
+    emit('navigate', link.tab)
+  }
+}
+
+// Active tab indicator
+const isActive = (link) => {
+  if (link.scrollTo) {
+    // "Soluções" highlights when home is active
+    return props.activeTab === 'home'
+  }
+  return props.activeTab === link.tab
+}
+
 const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
 </script>
 
@@ -46,22 +84,33 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between gap-2 sm:gap-4">
         
-        <!-- Logo -->
-        <a href="#hero" class="flex items-center shrink-0" @click="closeMobileMenu">
+        <!-- Logo → always goes home -->
+        <button
+          type="button"
+          class="flex items-center shrink-0 cursor-pointer"
+          @click="handleNav({ tab: 'home', scrollTo: null })"
+          aria-label="Voltar ao Início"
+        >
           <NexFormaLogo size="normal" :show-tagline="false" />
-        </a>
+        </button>
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden md:flex items-center gap-6 lg:gap-8">
-          <a 
-            v-for="link in navLinks" 
-            :key="link.name" 
-            :href="link.href"
-            class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors tracking-wide relative group py-1"
+          <button
+            v-for="link in navLinks"
+            :key="link.name"
+            type="button"
+            @click="handleNav(link)"
+            class="text-sm font-medium transition-colors tracking-wide relative group py-1 cursor-pointer"
+            :class="isActive(link) ? 'text-white' : 'text-slate-400 hover:text-cyan-400'"
           >
             {{ link.name }}
-            <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
-          </a>
+            <!-- Active underline indicator -->
+            <span
+              class="absolute bottom-0 left-0 h-[2px] bg-cyan-400 transition-all duration-300"
+              :class="isActive(link) ? 'w-full' : 'w-0 group-hover:w-full'"
+            ></span>
+          </button>
         </nav>
 
         <!-- Right Side: Desktop Social & CTA -->
@@ -91,7 +140,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
           </a>
         </div>
 
-        <!-- Mobile Controls (Clean, Compact, No Overlap) -->
+        <!-- Mobile Controls -->
         <div class="flex items-center gap-1.5 sm:gap-2.5 md:hidden shrink-0">
           <!-- Mobile Instagram Icon Button -->
           <a 
@@ -105,7 +154,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             <Instagram class="w-4 h-4" />
           </a>
 
-          <!-- Quick Quote Button (WhatsApp Direct) -->
+          <!-- Quick Quote Button -->
           <a 
             :href="GENERAL_WHATSAPP_URL"
             target="_blank" 
@@ -116,7 +165,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             <span class="hidden xs:inline sm:inline">Orçamento</span>
           </a>
 
-          <!-- Hamburger Menu Toggle Button -->
+          <!-- Hamburger Toggle -->
           <button 
             type="button"
             @click="isMobileMenuOpen = !isMobileMenuOpen"
@@ -145,16 +194,17 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
         class="md:hidden bg-[#111726]/98 backdrop-blur-xl border-b border-slate-700/50 px-5 sm:px-6 py-6 space-y-4 shadow-2xl"
       >
         <div class="flex flex-col space-y-2">
-          <a 
-            v-for="link in navLinks" 
-            :key="link.name" 
-            :href="link.href"
-            @click="closeMobileMenu"
-            class="text-base font-medium text-slate-200 hover:text-cyan-400 py-3 border-b border-slate-700/30 flex items-center justify-between"
+          <button
+            v-for="link in navLinks"
+            :key="link.name"
+            type="button"
+            @click="handleNav(link)"
+            class="text-base font-medium py-3 border-b border-slate-700/30 flex items-center justify-between cursor-pointer transition-colors w-full text-left"
+            :class="isActive(link) ? 'text-white' : 'text-slate-200 hover:text-cyan-400'"
           >
             <span>{{ link.name }}</span>
-            <ChevronRight class="w-4 h-4 text-slate-500" />
-          </a>
+            <ChevronRight class="w-4 h-4 shrink-0" :class="isActive(link) ? 'text-cyan-400' : 'text-slate-500'" />
+          </button>
         </div>
 
         <div class="pt-3 flex flex-col gap-3">

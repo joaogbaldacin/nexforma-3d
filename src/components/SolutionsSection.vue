@@ -12,7 +12,7 @@ import {
   Palette 
 } from 'lucide-vue-next'
 
-const emit = defineEmits(['open-quote', 'filter-catalog'])
+const emit = defineEmits(['open-quote', 'navigate'])
 
 const solutions = [
   {

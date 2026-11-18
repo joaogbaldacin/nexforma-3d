@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { 
   MessageSquare, 
   Sparkles, 
@@ -7,13 +7,29 @@ import {
   ExternalLink, 
   Clock, 
   Palette,
-  Info
+  Info,
+  Search,
+  X
 } from 'lucide-vue-next'
 import ProductSpecsModal from './ProductSpecsModal.vue'
 
-const selectedCategory = ref('todos')
+const props = defineProps({
+  initialCategory: {
+    type: String,
+    default: 'todos'
+  }
+})
+
+const selectedCategory = ref(props.initialCategory)
+const searchQuery = ref('')
 const selectedProduct = ref(null)
 const isSpecsModalOpen = ref(false)
+
+// React when parent changes initialCategory (tab navigation with pre-filter)
+watch(() => props.initialCategory, (val) => {
+  selectedCategory.value = val
+  searchQuery.value = ''
+})
 
 const openSpecs = (product) => {
   selectedProduct.value = product
@@ -22,6 +38,10 @@ const openSpecs = (product) => {
 
 const closeSpecs = () => {
   isSpecsModalOpen.value = false
+}
+
+const clearSearch = () => {
+  searchQuery.value = ''
 }
 
 const categories = [
@@ -246,10 +266,22 @@ const products = [
 ]
 
 const filteredProducts = computed(() => {
-  if (selectedCategory.value === 'todos') {
-    return products
+  let list = products
+  // Category filter
+  if (selectedCategory.value !== 'todos') {
+    list = list.filter(p => p.category === selectedCategory.value)
   }
-  return products.filter(p => p.category === selectedCategory.value)
+  // Search filter (name, material, description keywords)
+  const q = searchQuery.value.trim().toLowerCase()
+  if (q) {
+    list = list.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.materialHighlight.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      (p.specs?.materialAndFinish || '').toLowerCase().includes(q)
+    )
+  }
+  return list
 })
 
 const getOrderLink = (productName) => {
@@ -294,12 +326,12 @@ const getOrderLink = (productName) => {
       </div>
 
       <!-- Filter Buttons (Smooth & Elegant Pills) -->
-      <div class="flex items-center justify-center gap-1.5 sm:gap-2.5 flex-wrap mb-10 sm:mb-14">
+      <div class="flex items-center justify-center gap-1.5 sm:gap-2.5 flex-wrap mb-5 sm:mb-7">
         <button
           v-for="cat in categories"
           :key="cat.id"
           type="button"
-          @click="selectedCategory = cat.id"
+          @click="selectedCategory = cat.id; searchQuery = ''"
           class="px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer border select-none active:scale-95"
           :class="[
             selectedCategory === cat.id
@@ -311,8 +343,66 @@ const getOrderLink = (productName) => {
         </button>
       </div>
 
+      <!-- Search Bar -->
+      <div class="max-w-lg mx-auto mb-7 sm:mb-10">
+        <div class="relative flex items-center">
+          <Search class="absolute left-3.5 w-4 h-4 text-slate-500 pointer-events-none shrink-0" />
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Buscar por nome, material (PLA, PETG, Resina)..."
+            class="w-full pl-10 pr-10 py-2.5 rounded-xl bg-slate-800/70 border border-slate-700/50 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-400/60 transition-colors"
+          />
+          <button
+            v-if="searchQuery"
+            type="button"
+            @click="clearSearch"
+            class="absolute right-3 text-slate-500 hover:text-slate-200 transition-colors cursor-pointer"
+            aria-label="Limpar busca"
+          >
+            <X class="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Counter -->
+      <div class="flex items-center justify-between mb-5 sm:mb-7 px-1">
+        <p class="text-xs sm:text-sm text-slate-500">
+          <span class="text-cyan-400 font-semibold text-sm sm:text-base">{{ filteredProducts.length }}</span>
+          {{ filteredProducts.length === 1 ? ' produto encontrado' : ' produtos encontrados' }}
+          <span v-if="searchQuery" class="text-slate-600"> para "<span class="text-slate-400">{{ searchQuery }}</span>"</span>
+        </p>
+        <button
+          v-if="searchQuery || selectedCategory !== 'todos'"
+          type="button"
+          @click="selectedCategory = 'todos'; searchQuery = ''"
+          class="text-xs text-cyan-400 hover:text-cyan-300 transition-colors cursor-pointer underline underline-offset-2"
+        >
+          Limpar filtros
+        </button>
+      </div>
+
+      <!-- Empty State -->
+      <div
+        v-if="filteredProducts.length === 0"
+        class="py-20 text-center space-y-4"
+      >
+        <div class="w-16 h-16 rounded-2xl bg-slate-800/70 border border-slate-700/50 flex items-center justify-center mx-auto">
+          <Search class="w-7 h-7 text-slate-600" />
+        </div>
+        <h3 class="text-lg font-semibold text-slate-300 font-['Space_Grotesk']">Nenhum produto encontrado</h3>
+        <p class="text-sm text-slate-500 max-w-xs mx-auto">Tente outro termo de busca ou remova os filtros ativos.</p>
+        <button
+          type="button"
+          @click="selectedCategory = 'todos'; searchQuery = ''"
+          class="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 text-sm font-medium hover:bg-cyan-500/15 transition-colors cursor-pointer"
+        >
+          Ver todos os produtos
+        </button>
+      </div>
+
       <!-- Products Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         <div 
           v-for="product in filteredProducts" 
           :key="product.id"
