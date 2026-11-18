@@ -39,7 +39,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
     class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
     :class="[
       isScrolled 
-        ? 'bg-[#0B0D10]/95 backdrop-blur-md border-b border-[#232B3B] py-2.5 sm:py-3 shadow-[0_4px_20px_rgba(0,0,0,0.5)]' 
+        ? 'bg-[#111726]/95 backdrop-blur-xl border-b border-slate-700/50 py-2.5 sm:py-3 shadow-lg shadow-black/30' 
         : 'bg-transparent py-3.5 sm:py-5'
     ]"
   >
@@ -57,10 +57,10 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             v-for="link in navLinks" 
             :key="link.name" 
             :href="link.href"
-            class="text-sm font-medium text-[#9CA3AF] hover:text-[#00E5FF] transition-colors tracking-wide relative group py-1"
+            class="text-sm font-medium text-slate-400 hover:text-cyan-400 transition-colors tracking-wide relative group py-1"
           >
             {{ link.name }}
-            <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-[#00E5FF] transition-all duration-300 group-hover:w-full drop-shadow-[0_0_6px_#00E5FF]"></span>
+            <span class="absolute bottom-0 left-0 w-0 h-[2px] bg-cyan-400 transition-all duration-300 group-hover:w-full"></span>
           </a>
         </nav>
 
@@ -71,7 +71,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             href="https://instagram.com/nexforma.3d" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="w-10 h-10 rounded-full bg-[#151921] border border-[#232B3B] hover:border-[#00E5FF] text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,229,255,0.25)] group"
+            class="w-10 h-10 rounded-full bg-slate-800/80 border border-slate-700/60 hover:border-cyan-400/50 text-slate-400 hover:text-cyan-400 flex items-center justify-center transition-all duration-300 group"
             title="Siga a NexForma.3D no Instagram"
             aria-label="Instagram da NexForma.3D"
           >
@@ -83,7 +83,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             :href="GENERAL_WHATSAPP_URL"
             target="_blank" 
             rel="noopener noreferrer"
-            class="relative group overflow-hidden rounded-xl px-5 py-2.5 text-sm font-semibold text-[#0B0D10] bg-[#00E5FF] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,229,255,0.6)] active:scale-95 cursor-pointer flex items-center gap-2 min-h-[42px]"
+            class="relative group overflow-hidden rounded-xl px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 shadow-md hover:shadow-cyan-500/30 transition-all duration-300 active:scale-95 cursor-pointer flex items-center gap-2 min-h-[42px]"
           >
             <span class="absolute inset-0 w-full h-full bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
             <MessageSquare class="w-4 h-4 fill-current" />
@@ -98,7 +98,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             href="https://instagram.com/nexforma.3d" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="w-9 h-9 rounded-full bg-[#151921] border border-[#232B3B] hover:border-[#00E5FF] text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center transition-all active:scale-95 shrink-0"
+            class="w-9 h-9 rounded-full bg-slate-800/80 border border-slate-700/60 hover:border-cyan-400/50 text-slate-400 hover:text-cyan-400 flex items-center justify-center transition-all active:scale-95 shrink-0"
             title="Instagram"
             aria-label="Instagram da NexForma.3D"
           >
@@ -110,7 +110,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             :href="GENERAL_WHATSAPP_URL"
             target="_blank" 
             rel="noopener noreferrer"
-            class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#00E5FF] text-[#0B0D10] flex items-center gap-1 active:scale-95 cursor-pointer shrink-0 min-h-[36px]"
+            class="px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded-lg bg-gradient-to-r from-cyan-500 to-sky-500 text-white flex items-center gap-1 active:scale-95 cursor-pointer shrink-0 min-h-[36px]"
           >
             <MessageSquare class="w-3.5 h-3.5 fill-current" />
             <span class="hidden xs:inline sm:inline">Orçamento</span>
@@ -120,11 +120,11 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
           <button 
             type="button"
             @click="isMobileMenuOpen = !isMobileMenuOpen"
-            class="w-9 h-9 rounded-lg bg-[#151921] border border-[#232B3B] text-[#9CA3AF] hover:text-[#00E5FF] flex items-center justify-center focus:outline-none cursor-pointer active:scale-95 shrink-0"
+            class="w-9 h-9 rounded-lg bg-slate-800/80 border border-slate-700/60 text-slate-400 hover:text-cyan-400 flex items-center justify-center focus:outline-none cursor-pointer active:scale-95 shrink-0"
             aria-label="Abrir Menu"
           >
             <Menu v-if="!isMobileMenuOpen" class="w-5 h-5" />
-            <X v-else class="w-5 h-5 text-[#00E5FF]" />
+            <X v-else class="w-5 h-5 text-cyan-400" />
           </button>
         </div>
 
@@ -142,7 +142,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
     >
       <div 
         v-if="isMobileMenuOpen" 
-        class="md:hidden bg-[#0B0D10]/98 backdrop-blur-xl border-b border-[#232B3B] px-5 sm:px-6 py-6 space-y-4 shadow-2xl"
+        class="md:hidden bg-[#111726]/98 backdrop-blur-xl border-b border-slate-700/50 px-5 sm:px-6 py-6 space-y-4 shadow-2xl"
       >
         <div class="flex flex-col space-y-2">
           <a 
@@ -150,10 +150,10 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             :key="link.name" 
             :href="link.href"
             @click="closeMobileMenu"
-            class="text-base font-medium text-[#F3F4F6] hover:text-[#00E5FF] py-3 border-b border-[#232B3B]/40 flex items-center justify-between"
+            class="text-base font-medium text-slate-200 hover:text-cyan-400 py-3 border-b border-slate-700/30 flex items-center justify-between"
           >
             <span>{{ link.name }}</span>
-            <ChevronRight class="w-4 h-4 text-[#9CA3AF]" />
+            <ChevronRight class="w-4 h-4 text-slate-500" />
           </a>
         </div>
 
@@ -162,9 +162,9 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             href="https://instagram.com/nexforma.3d" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-[#151921] border border-[#232B3B] text-sm text-[#9CA3AF] hover:text-[#00E5FF] active:scale-98 transition-all"
+            class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-800/70 border border-slate-700/50 text-sm text-slate-400 hover:text-cyan-400 active:scale-98 transition-all"
           >
-            <Instagram class="w-4 h-4 text-[#00E5FF]" />
+            <Instagram class="w-4 h-4 text-cyan-400" />
             <span class="font-['Space_Grotesk'] font-medium">Instagram @nexforma.3d</span>
           </a>
 
@@ -173,7 +173,7 @@ const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComp
             target="_blank" 
             rel="noopener noreferrer"
             @click="closeMobileMenu"
-            class="w-full py-3.5 rounded-xl bg-[#00E5FF] text-[#0B0D10] font-bold text-center flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,229,255,0.4)] cursor-pointer active:scale-98 min-h-[48px]"
+            class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 text-white font-bold text-center flex items-center justify-center gap-2 cursor-pointer active:scale-98 min-h-[48px] shadow-md"
           >
             <MessageSquare class="w-4 h-4 fill-current" />
             <span>Pedir Orçamento no WhatsApp</span>

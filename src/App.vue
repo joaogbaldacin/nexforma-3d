@@ -23,7 +23,7 @@ const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURICompon
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0B0D10] text-[#F3F4F6] flex flex-col font-['Inter'] relative selection:bg-[#00E5FF] selection:text-[#0B0D10] overflow-x-hidden">
+  <div class="min-h-screen bg-[#111726] text-[#F3F4F6] flex flex-col font-['Inter'] relative selection:bg-cyan-500/40 selection:text-white overflow-x-hidden">
     
     <!-- Navbar -->
     <Navbar @open-quote="openQuote" />
@@ -54,14 +54,10 @@ const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURICompon
       :href="WHATSAPP_FLOAT_URL" 
       target="_blank" 
       rel="noopener noreferrer"
-      class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 group flex items-center gap-2 p-3 sm:p-3.5 bg-[#00E5FF] text-[#0B0D10] font-bold rounded-full shadow-[0_0_25px_rgba(0,229,255,0.6)] hover:shadow-[0_0_35px_rgba(0,229,255,0.9)] hover:scale-105 active:scale-95 transition-all duration-300"
+      class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 group flex items-center gap-2 p-3 sm:p-3.5 bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold rounded-full shadow-lg shadow-black/40 hover:shadow-xl hover:shadow-black/50 hover:scale-105 active:scale-95 transition-all duration-300"
       title="Falar no WhatsApp com a NexForma.3D"
       aria-label="Falar no WhatsApp com a NexForma.3D"
     >
-      <span class="relative flex h-2.5 w-2.5 sm:h-3 sm:w-3">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0B0D10] opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2.5 w-2.5 sm:h-3 sm:w-3 bg-[#0B0D10]"></span>
-      </span>
       <MessageSquare class="w-5 h-5 fill-current" />
       <span class="hidden md:inline-block pr-1 font-['Space_Grotesk'] text-sm font-extrabold tracking-wide">
         WhatsApp Orçamentos
