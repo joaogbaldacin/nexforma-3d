@@ -11,6 +11,7 @@ import {
   Zap, 
   Palette 
 } from 'lucide-vue-next'
+import { createWhatsAppUrl } from '../utils/whatsapp'
 
 const emit = defineEmits(['open-quote', 'navigate'])
 
@@ -62,7 +63,7 @@ const solutions = [
 ]
 
 const getWhatsAppLink = (message) => {
-  return `https://wa.me/5519989690055?text=${encodeURIComponent(message)}`
+  return createWhatsAppUrl(message)
 }
 </script>
 

@@ -10,6 +10,7 @@ import {
   Truck,
   RotateCcw
 } from 'lucide-vue-next'
+import { getGeneralWhatsAppUrl } from '../utils/whatsapp'
 
 const emit = defineEmits(['open-quote'])
 
@@ -134,7 +135,7 @@ const guarantees = [
             Pronto para iniciar seu projeto ou tirar dúvidas técnicas?
           </span>
           <a 
-            :href="'https://wa.me/5519989690055?text=' + encodeURIComponent('Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.')"
+            :href="getGeneralWhatsAppUrl()"
             target="_blank"
             rel="noopener noreferrer"
             class="w-full sm:w-auto px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-cyan-500/25 transition-all cursor-pointer flex items-center justify-center gap-2 min-h-[44px]"

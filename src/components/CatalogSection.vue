@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useProducts } from '../composables/useProducts'
+import { getProductWhatsAppUrl, getGeneralWhatsAppUrl } from '../utils/whatsapp'
 import { 
   MessageSquare, 
   Sparkles, 
@@ -75,9 +76,8 @@ const filteredProducts = computed(() => {
   return list
 })
 
-const getOrderLink = (productName) => {
-  const text = `Olá! Vi o produto ${productName} no site da NexForma.3D e gostaria de tirar dúvidas / fazer um orçamento.`
-  return `https://wa.me/5519989690055?text=${encodeURIComponent(text)}`
+const getOrderLink = (product) => {
+  return getProductWhatsAppUrl(product)
 }
 </script>
 
@@ -535,7 +535,7 @@ const getOrderLink = (productName) => {
 
               <!-- Button 2: Encomendar pelo WhatsApp (Primary CTA) -->
               <a 
-                :href="getOrderLink(product.name)"
+                :href="getProductWhatsAppUrl(product)"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-cyan-500/25 active:scale-98 cursor-pointer min-h-[48px]"
@@ -566,7 +566,7 @@ const getOrderLink = (productName) => {
         </div>
 
         <a 
-          :href="'https://wa.me/5519989690055?text=' + encodeURIComponent('Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.')"
+          :href="getGeneralWhatsAppUrl()"
           target="_blank"
           rel="noopener noreferrer"
           class="w-full md:w-auto shrink-0 px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-sky-500 border border-cyan-500/30 text-slate-200 hover:text-white font-bold text-xs sm:text-sm transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow-md hover:shadow-cyan-500/20 min-h-[48px] text-center"

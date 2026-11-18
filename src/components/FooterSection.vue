@@ -1,6 +1,7 @@
 <script setup>
 import NexFormaLogo from './NexFormaLogo.vue'
 import { Instagram, MessageSquare, Globe2, Lock } from 'lucide-vue-next'
+import { getGeneralWhatsAppUrl } from '../utils/whatsapp'
 
 const emit = defineEmits(['navigate'])
 
@@ -46,7 +47,7 @@ const currentYear = new Date().getFullYear()
 
             <!-- WhatsApp Icon Button -->
             <a 
-              :href="'https://wa.me/5519989690055?text=' + encodeURIComponent('Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.')"
+              :href="getGeneralWhatsAppUrl()"
               target="_blank" 
               rel="noopener noreferrer"
               class="w-10 h-10 rounded-full bg-slate-800/70 border border-slate-700/50 hover:border-cyan-400/50 text-slate-400 hover:text-cyan-400 flex items-center justify-center transition-all duration-300 group active:scale-95 shrink-0"

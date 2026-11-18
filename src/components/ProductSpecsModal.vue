@@ -1,5 +1,6 @@
 <script setup>
 import { watch, onMounted, onUnmounted } from 'vue'
+import { getProductWhatsAppUrl } from '../utils/whatsapp'
 import { 
   X, 
   MessageSquare, 
@@ -210,7 +211,7 @@ watch(() => props.isOpen, (newVal) => {
             </div>
 
             <a 
-              :href="`https://wa.me/5519989690055?text=${encodeURIComponent('Olá! Vi o produto ' + product.name + ' no site da NexForma.3D e gostaria de tirar dúvidas / fazer um orçamento.')}`"
+              :href="getProductWhatsAppUrl(product)"
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-cyan-500/30 transition-all cursor-pointer active:scale-95 min-h-[48px]"

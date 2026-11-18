@@ -10,6 +10,7 @@ import FooterSection from './components/FooterSection.vue'
 import QuoteModal from './components/QuoteModal.vue'
 import AdminPanel from './components/AdminPanel.vue'
 import { useProducts } from './composables/useProducts'
+import { getGeneralWhatsAppUrl } from './utils/whatsapp'
 import { MessageSquare } from 'lucide-vue-next'
 
 const { fetchProducts } = useProducts()
@@ -46,7 +47,7 @@ onMounted(() => {
   }
 })
 
-const WHATSAPP_FLOAT_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
+const WHATSAPP_FLOAT_URL = getGeneralWhatsAppUrl()
 </script>
 
 <template>

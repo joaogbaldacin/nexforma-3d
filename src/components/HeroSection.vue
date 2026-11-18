@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { getGeneralWhatsAppUrl } from '../utils/whatsapp'
 import { 
   ArrowRight, 
   MessageSquare, 
@@ -16,7 +17,7 @@ import {
 
 const emit = defineEmits(['open-quote', 'navigate'])
 
-const WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
+const WHATSAPP_URL = getGeneralWhatsAppUrl()
 
 // Animated telemetry simulation
 const currentLayer = ref(184)

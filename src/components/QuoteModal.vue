@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import { X, MessageSquare, Send, CheckCircle2, Sparkles, FileUp, Cpu } from 'lucide-vue-next'
+import { createWhatsAppUrl } from '../utils/whatsapp'
 
 const props = defineProps({
   isOpen: {
@@ -48,7 +49,7 @@ const handleSendWhatsApp = () => {
   }
   message += `\nEnvio para meu CEP. Poderiam me passar os prazos e valores?`
 
-  const url = `https://wa.me/5519989690055?text=${encodeURIComponent(message)}`
+  const url = createWhatsAppUrl(message)
   window.open(url, '_blank')
   emit('close')
 }

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import NexFormaLogo from './NexFormaLogo.vue'
+import { getGeneralWhatsAppUrl } from '../utils/whatsapp'
 import { Menu, X, MessageSquare, Instagram, ChevronRight } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -50,7 +51,7 @@ const isActive = (link) => {
   return props.activeTab === link.tab
 }
 
-const GENERAL_WHATSAPP_URL = "https://wa.me/5519989690055?text=" + encodeURIComponent("Olá! Vim pelo site da NexForma.3D e gostaria de solicitar um orçamento sob medida.")
+const GENERAL_WHATSAPP_URL = getGeneralWhatsAppUrl()
 </script>
 
 <template>

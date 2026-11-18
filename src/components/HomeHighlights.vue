@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useProducts } from '../composables/useProducts'
+import { getProductWhatsAppUrl } from '../utils/whatsapp'
 import { 
   Layers, 
   Cpu, 
@@ -101,9 +102,8 @@ const toggleFaq = (index) => {
   activeFaq.value = activeFaq.value === index ? null : index
 }
 
-const getOrderLink = (productName) => {
-  const text = `Olá! Vi o produto ${productName} nos destaques da NexForma.3D e gostaria de tirar dúvidas / fazer um orçamento.`
-  return `https://wa.me/5519989690055?text=${encodeURIComponent(text)}`
+const getOrderLink = (product) => {
+  return getProductWhatsAppUrl(product)
 }
 </script>
 
@@ -269,7 +269,7 @@ const getOrderLink = (productName) => {
                 </span>
               </div>
               <a 
-                :href="getOrderLink(item.name)"
+                :href="getProductWhatsAppUrl(item)"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer min-h-[38px] active:scale-95"
