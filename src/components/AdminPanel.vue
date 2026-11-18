@@ -42,7 +42,6 @@ const {
 
 // Auth State
 const session = ref(null)
-const isDemoMode = ref(false)
 const email = ref('')
 const password = ref('')
 const authLoading = ref(false)
@@ -66,14 +65,14 @@ onMounted(async () => {
 })
 
 const isAuthenticated = computed(() => {
-  return Boolean(session.value) || isDemoMode.value
+  return Boolean(session.value)
 })
 
 const handleLogin = async () => {
   authError.value = ''
 
   if (!isSupabaseConfigured || !supabase) {
-    authError.value = 'Chaves do Supabase não configuradas no arquivo .env.local. Você pode usar o Modo Demonstração abaixo.'
+    authError.value = 'Chaves do Supabase não configuradas no arquivo .env.local.'
     return
   }
 
@@ -109,7 +108,6 @@ const handleLogout = async () => {
     await supabase.auth.signOut()
   }
   session.value = null
-  isDemoMode.value = false
 }
 
 // Search inside admin
@@ -318,20 +316,6 @@ const savePrice = async (id) => {
           </button>
         </form>
 
-        <!-- Demo Mode Shortcut (If Supabase not yet configured or testing) -->
-        <div class="mt-8 pt-6 border-t border-slate-700/40 text-center space-y-3">
-          <p class="text-[11px] text-slate-400">
-            Ainda não colou as chaves do Supabase?
-          </p>
-          <button
-            type="button"
-            @click="isDemoMode = true"
-            class="text-xs text-cyan-400 hover:text-cyan-300 font-medium underline underline-offset-4 cursor-pointer"
-          >
-            Acessar no Modo Demonstração (Local) →
-          </button>
-        </div>
-
       </div>
     </div>
 
@@ -357,10 +341,9 @@ const savePrice = async (id) => {
                 Painel Administrativo
               </h1>
               <span 
-                class="px-2.5 py-0.5 rounded-full text-[10px] font-['JetBrains_Mono'] border"
-                :class="isLoadedFromDb ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30'"
+                class="px-2.5 py-0.5 rounded-full text-[10px] font-['JetBrains_Mono'] border bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
               >
-                {{ isLoadedFromDb ? 'Supabase Conectado' : 'Modo Demonstração' }}
+                Supabase Conectado
               </span>
             </div>
             <p class="text-xs text-slate-400">
