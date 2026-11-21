@@ -1,5 +1,5 @@
 <script setup>
-import { watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { getProductWhatsAppUrl } from '../utils/whatsapp'
 import { 
   X, 
@@ -12,7 +12,9 @@ import {
   CheckCircle2, 
   Sparkles,
   Clock,
-  ShieldCheck
+  ShieldCheck,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -27,6 +29,33 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+const activeImgIdx = ref(0)
+
+watch(() => props.product, () => {
+  activeImgIdx.value = 0
+})
+
+const getImages = computed(() => {
+  if (!props.product) return []
+  if (Array.isArray(props.product.images) && props.product.images.length > 0) {
+    return props.product.images
+  }
+  if (props.product.image_url) {
+    return [props.product.image_url]
+  }
+  return []
+})
+
+const nextImage = () => {
+  if (getImages.value.length <= 1) return
+  activeImgIdx.value = (activeImgIdx.value + 1) % getImages.value.length
+}
+
+const prevImage = () => {
+  if (getImages.value.length <= 1) return
+  activeImgIdx.value = (activeImgIdx.value - 1 + getImages.value.length) % getImages.value.length
+}
 
 // Close on escape key
 const handleKeyDown = (e) => {
@@ -112,19 +141,65 @@ watch(() => props.isOpen, (newVal) => {
           <!-- Modal Body / Specs Grid -->
           <div class="p-5 sm:p-7 space-y-4 sm:space-y-5 max-h-[60vh] sm:max-h-[65vh] overflow-y-auto">
             
+            <!-- Product Photo Gallery -->
+            <div v-if="getImages.length > 0" class="space-y-2.5">
+              <!-- Main Active Image -->
+              <div class="relative aspect-square sm:aspect-[16/10] max-h-72 w-full rounded-2xl overflow-hidden bg-slate-900 border border-slate-700/50 flex items-center justify-center group">
+                <img 
+                  :src="getImages[activeImgIdx] || getImages[0]" 
+                  :alt="product.name" 
+                  class="w-full h-full object-contain"
+                />
+
+                <!-- Prev / Next arrows if multiple images -->
+                <div v-if="getImages.length > 1" class="absolute inset-y-0 inset-x-2 flex items-center justify-between pointer-events-none">
+                  <button 
+                    type="button" 
+                    @click.stop="prevImage"
+                    class="p-2 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white pointer-events-auto border border-slate-700/60 shadow-lg cursor-pointer transition-all active:scale-95"
+                    aria-label="Imagem anterior"
+                  >
+                    <ChevronLeft class="w-4 h-4" />
+                  </button>
+                  <button 
+                    type="button" 
+                    @click.stop="nextImage"
+                    class="p-2 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white pointer-events-auto border border-slate-700/60 shadow-lg cursor-pointer transition-all active:scale-95"
+                    aria-label="Próxima imagem"
+                  >
+                    <ChevronRight class="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              <!-- Thumbnails Row (if > 1 image) -->
+              <div v-if="getImages.length > 1" class="flex items-center gap-2 overflow-x-auto pb-1">
+                <button 
+                  v-for="(img, idx) in getImages" 
+                  :key="idx"
+                  type="button"
+                  @click="activeImgIdx = idx"
+                  class="w-14 h-14 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer"
+                  :class="activeImgIdx === idx ? 'border-cyan-400 ring-2 ring-cyan-400/40 scale-105' : 'border-slate-700/60 opacity-60 hover:opacity-100'"
+                >
+                  <img :src="img" class="w-full h-full object-cover" />
+                </button>
+              </div>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               
-              <!-- 1. Dimensões -->
+              <!-- 1. Dimensões / Altura -->
               <div class="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-900/70 border border-slate-700/40 flex items-start gap-3">
                 <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-800/80 border border-slate-700/40 flex items-center justify-center text-cyan-400 shrink-0 mt-0.5">
                   <Ruler class="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
                   <h4 class="text-[10px] sm:text-xs font-['Space_Grotesk'] text-slate-500 uppercase tracking-wider font-semibold">
-                    Dimensões
+                    Dimensões / Altura
                   </h4>
                   <p class="text-xs sm:text-sm font-semibold text-slate-100 mt-0.5">
-                    {{ product.specs?.dimensions || 'Sob Consulta' }}
+                    {{ product.height ? (product.height.includes('cm') ? product.height : product.height + ' cm') : (product.specs?.dimensions || 'Sob Consulta') }}
                   </p>
                 </div>
               </div>
@@ -139,7 +214,7 @@ watch(() => props.isOpen, (newVal) => {
                     Peso Estimado
                   </h4>
                   <p class="text-xs sm:text-sm font-semibold text-slate-100 mt-0.5">
-                    {{ product.specs?.weight || 'Variável' }}
+                    {{ product.weight ? (product.weight.includes('g') ? product.weight : product.weight + ' g') : (product.specs?.weight || 'Variável') }}
                   </p>
                 </div>
               </div>

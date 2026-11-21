@@ -16,7 +16,11 @@ import {
   Wrench,
   CheckCircle2,
   Clock,
-  Heart
+  Heart,
+  ChevronLeft,
+  ChevronRight,
+  Ruler,
+  Weight
 } from 'lucide-vue-next'
 
 const emit = defineEmits(['open-quote', 'navigate'])
@@ -96,6 +100,47 @@ const faqs = [
   }
 ]
 
+// Multi-image navigation on featured cards
+const activeImageIndices = ref({})
+
+const getItemImages = (item) => {
+  if (Array.isArray(item.images) && item.images.length > 0) {
+    return item.images
+  }
+  if (item.image_url) {
+    return [item.image_url]
+  }
+  return []
+}
+
+const getActiveImage = (item) => {
+  const imgs = getItemImages(item)
+  if (imgs.length === 0) return null
+  const idx = activeImageIndices.value[item.id] || 0
+  return imgs[idx] || imgs[0]
+}
+
+const nextImage = (item, e) => {
+  if (e) e.stopPropagation()
+  const imgs = getItemImages(item)
+  if (imgs.length <= 1) return
+  const current = activeImageIndices.value[item.id] || 0
+  activeImageIndices.value[item.id] = (current + 1) % imgs.length
+}
+
+const prevImage = (item, e) => {
+  if (e) e.stopPropagation()
+  const imgs = getItemImages(item)
+  if (imgs.length <= 1) return
+  const current = activeImageIndices.value[item.id] || 0
+  activeImageIndices.value[item.id] = (current - 1 + imgs.length) % imgs.length
+}
+
+const setImageIndex = (item, idx, e) => {
+  if (e) e.stopPropagation()
+  activeImageIndices.value[item.id] = idx
+}
+
 const activeFaq = ref(0) // first open by default
 
 const toggleFaq = (index) => {
@@ -172,18 +217,62 @@ const getOrderLink = (product) => {
           class="rounded-2xl sm:rounded-3xl bg-slate-800/70 border border-slate-700/50 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:border-cyan-400/40 hover:shadow-xl hover:shadow-black/30 hover:-translate-y-1.5 backdrop-blur-sm group"
         >
           <div>
-            <!-- Visual studio mockup container -->
-            <div class="relative h-52 sm:h-60 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-700/50 flex items-center justify-center overflow-hidden">
+            <!-- Visual studio mockup container (Square 1:1 Aspect Ratio) -->
+            <div class="relative aspect-square w-full bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-700/50 flex items-center justify-center overflow-hidden">
               <div class="absolute inset-0 bg-radial from-cyan-500/8 via-transparent to-transparent opacity-40 group-hover:opacity-80 transition-opacity"></div>
               <div class="absolute bottom-4 w-36 h-6 bg-black/60 rounded-full blur-md"></div>
 
               <!-- Real photo if uploaded, otherwise procedural SVG -->
-              <img 
-                v-if="item.image_url" 
-                :src="item.image_url" 
-                :alt="item.name" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+              <template v-if="getActiveImage(item)">
+                <img 
+                  :src="getActiveImage(item)" 
+                  :alt="item.name" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+
+                <!-- Multi-image Arrows Navigation (if item has > 1 image) -->
+                <div 
+                  v-if="getItemImages(item).length > 1" 
+                  class="absolute inset-y-0 inset-x-2 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                >
+                  <button 
+                    type="button" 
+                    @click.stop="prevImage(item, $event)"
+                    class="p-1.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white pointer-events-auto border border-slate-700/60 shadow-lg cursor-pointer active:scale-95 transition-all"
+                    aria-label="Foto anterior"
+                  >
+                    <ChevronLeft class="w-4 h-4" />
+                  </button>
+                  <button 
+                    type="button" 
+                    @click.stop="nextImage(item, $event)"
+                    class="p-1.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white pointer-events-auto border border-slate-700/60 shadow-lg cursor-pointer active:scale-95 transition-all"
+                    aria-label="Próxima foto"
+                  >
+                    <ChevronRight class="w-4 h-4" />
+                  </button>
+                </div>
+
+                <!-- Multi-image Dot Indicators -->
+                <div 
+                  v-if="getItemImages(item).length > 1" 
+                  class="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1.5 pointer-events-none z-10"
+                >
+                  <button 
+                    v-for="(_, dotIdx) in getItemImages(item)" 
+                    :key="dotIdx"
+                    type="button"
+                    @click.stop="setImageIndex(item, dotIdx, $event)"
+                    class="h-1.5 rounded-full transition-all pointer-events-auto cursor-pointer"
+                    :class="[
+                      (activeImageIndices[item.id] || 0) === dotIdx 
+                        ? 'w-4 bg-cyan-400 shadow-sm shadow-cyan-400/50' 
+                        : 'w-1.5 bg-slate-400/60 hover:bg-white'
+                    ]"
+                    :aria-label="'Ver foto ' + (dotIdx + 1)"
+                  ></button>
+                </div>
+              </template>
 
               <!-- 1. Vaso -->
               <svg v-else-if="item.svgType === 'vase'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-40 sm:h-40 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105">
@@ -243,15 +332,39 @@ const getOrderLink = (product) => {
               <h3 class="text-lg font-bold font-['Space_Grotesk'] text-white group-hover:text-cyan-400 transition-colors">
                 {{ item.name }}
               </h3>
-              <p class="text-xs text-slate-400 leading-relaxed">
-                {{ item.description }}
+              <p class="text-xs text-slate-400 leading-relaxed line-clamp-2 min-h-[2.5rem]">
+                {{ item.short_description || item.description }}
               </p>
+
+              <!-- Discrete Physical Specs Tags (Altura & Peso) -->
+              <div 
+                v-if="item.height || item.weight || item.specs?.dimensions || item.specs?.weight" 
+                class="flex flex-wrap items-center gap-1.5 text-[11px] font-['JetBrains_Mono'] pt-0.5"
+              >
+                <span 
+                  v-if="item.height || item.specs?.dimensions" 
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-900/80 text-slate-300 border border-slate-700/50"
+                  title="Altura / Dimensões"
+                >
+                  <Ruler class="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span>{{ item.height ? (item.height.includes('cm') ? item.height : item.height + ' cm') : item.specs?.dimensions }}</span>
+                </span>
+                <span 
+                  v-if="item.weight || item.specs?.weight" 
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-900/80 text-slate-300 border border-slate-700/50"
+                  title="Peso Estimado"
+                >
+                  <Weight class="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span>{{ item.weight ? (item.weight.includes('g') ? item.weight : item.weight + ' g') : item.specs?.weight }}</span>
+                </span>
+              </div>
+
               <div class="pt-1 flex items-center gap-2 text-[11px] text-slate-400">
                 <span class="px-2 py-0.5 rounded bg-slate-900/70 border border-slate-700/40 text-slate-300">
                   {{ item.material }}
                 </span>
                 <span class="flex items-center gap-1 text-cyan-400/90">
-                  <Clock class="w-3 h-3 shrink-0" /> {{ item.leadTime }}
+                  <Clock class="w-3 h-3 shrink-0" /> {{ item.leadTime || 'Pronto em 48h' }}
                 </span>
               </div>
             </div>

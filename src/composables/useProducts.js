@@ -275,13 +275,22 @@ function normalizeProduct(item) {
     ? `R$ ${priceNum.toFixed(2).replace('.', ',')}` 
     : (item.priceValue || 'Sob Medida')
 
+  const imagesList = Array.isArray(item.images) && item.images.length > 0
+    ? item.images
+    : (item.image_url ? [item.image_url] : (item.imageUrl ? [item.imageUrl] : []))
+
+  const coverImage = imagesList[0] || item.image_url || item.imageUrl || ''
+
   return {
     id: item.id,
     name: item.name || 'Produto sem nome',
     category: item.category || 'decoracao',
     categoryLabel: item.categoryLabel || categoryLabels[item.category] || 'Geral',
     badge: item.badge || (item.is_featured ? 'Destaque' : 'Sob Medida'),
+    short_description: item.short_description || (item.description ? (item.description.length > 120 ? item.description.slice(0, 120) + '...' : item.description) : ''),
     description: item.description || '',
+    height: item.height || '',
+    weight: item.weight || (item.specs?.weight || ''),
     highlight: item.highlight || (item.material ? `Material: ${item.material}` : 'Acabamento premium'),
     materialHighlight: item.materialHighlight || item.material || 'PLA Premium',
     leadTimeBadge: item.leadTimeBadge || (item.stock > 0 ? 'Pronto para envio' : 'Pronto em até 48h'),
@@ -291,10 +300,11 @@ function normalizeProduct(item) {
     stock: typeof item.stock === 'number' ? item.stock : 0,
     is_featured: Boolean(item.is_featured),
     svgType: item.svgType || 'vase',
-    image_url: item.image_url || item.imageUrl || '',
+    images: imagesList,
+    image_url: coverImage,
     specs: item.specs || {
-      dimensions: item.dimensions || 'Sob medida',
-      weight: item.weight || 'Variável',
+      dimensions: item.height ? (item.height.includes('cm') ? item.height : `${item.height} cm`) : (item.dimensions || 'Sob medida'),
+      weight: item.weight ? (item.weight.includes('g') ? item.weight : `${item.weight} g`) : 'Variável',
       materialAndFinish: item.material || 'PLA Silk / PETG',
       colors: ['Preto', 'Branco', 'Ciano Neon', 'Sob consulta'],
       notes: item.print_time ? `Tempo de impressão estimado: ${item.print_time}` : 'Fabricação digital aditiva com acabamento artesanal.'
@@ -420,19 +430,25 @@ export function useProducts() {
 
     if (isSupabaseConfigured && supabase) {
       try {
+        const payload = {
+          name: normalized.name,
+          category: normalized.category,
+          short_description: normalized.short_description,
+          description: normalized.description,
+          height: normalized.height,
+          weight: normalized.weight,
+          material: normalized.materialHighlight,
+          dimensions: normalized.specs?.dimensions,
+          price: normalized.price,
+          stock: normalized.stock,
+          is_featured: normalized.is_featured,
+          images: normalized.images,
+          image_url: normalized.image_url
+        }
+
         const { data, error: err } = await supabase
           .from('products')
-          .insert([{
-            name: normalized.name,
-            category: normalized.category,
-            description: normalized.description,
-            material: normalized.materialHighlight,
-            dimensions: normalized.specs?.dimensions,
-            price: normalized.price,
-            stock: normalized.stock,
-            is_featured: normalized.is_featured,
-            image_url: normalized.image_url
-          }])
+          .insert([payload])
           .select()
 
         if (!err && data && data[0]) {
@@ -459,18 +475,26 @@ export function useProducts() {
 
     if (isSupabaseConfigured && supabase && isLoadedFromDb.value) {
       try {
+        const target = products.value[index]
+        const payload = {
+          name: target.name,
+          category: target.category,
+          short_description: target.short_description,
+          description: target.description,
+          height: target.height,
+          weight: target.weight,
+          material: target.materialHighlight || target.material,
+          dimensions: target.specs?.dimensions,
+          price: target.price,
+          stock: target.stock,
+          is_featured: target.is_featured,
+          images: target.images,
+          image_url: target.image_url
+        }
+
         await supabase
           .from('products')
-          .update({
-            name: updates.name,
-            category: updates.category,
-            description: updates.description,
-            material: updates.materialHighlight || updates.material,
-            price: updates.price,
-            stock: updates.stock,
-            is_featured: updates.is_featured,
-            image_url: updates.image_url
-          })
+          .update(payload)
           .eq('id', id)
       } catch (e) {
         console.error('[Supabase] Falha ao atualizar produto:', e)

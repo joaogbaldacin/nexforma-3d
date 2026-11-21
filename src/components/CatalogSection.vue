@@ -12,7 +12,11 @@ import {
   Info, 
   Search, 
   X,
-  CheckCircle2
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Ruler,
+  Weight
 } from 'lucide-vue-next'
 import ProductSpecsModal from './ProductSpecsModal.vue'
 
@@ -43,6 +47,47 @@ const openSpecs = (product) => {
 
 const closeSpecs = () => {
   isSpecsModalOpen.value = false
+}
+
+// Multi-image navigation on cards
+const activeImageIndices = ref({})
+
+const getProductImages = (product) => {
+  if (Array.isArray(product.images) && product.images.length > 0) {
+    return product.images
+  }
+  if (product.image_url) {
+    return [product.image_url]
+  }
+  return []
+}
+
+const getActiveImage = (product) => {
+  const imgs = getProductImages(product)
+  if (imgs.length === 0) return null
+  const idx = activeImageIndices.value[product.id] || 0
+  return imgs[idx] || imgs[0]
+}
+
+const nextImage = (product, e) => {
+  if (e) e.stopPropagation()
+  const imgs = getProductImages(product)
+  if (imgs.length <= 1) return
+  const current = activeImageIndices.value[product.id] || 0
+  activeImageIndices.value[product.id] = (current + 1) % imgs.length
+}
+
+const prevImage = (product, e) => {
+  if (e) e.stopPropagation()
+  const imgs = getProductImages(product)
+  if (imgs.length <= 1) return
+  const current = activeImageIndices.value[product.id] || 0
+  activeImageIndices.value[product.id] = (current - 1 + imgs.length) % imgs.length
+}
+
+const setImageIndex = (product, idx, e) => {
+  if (e) e.stopPropagation()
+  activeImageIndices.value[product.id] = idx
 }
 
 const clearSearch = () => {
@@ -201,8 +246,8 @@ const getOrderLink = (product) => {
         >
           
           <div>
-            <!-- Studio Photography Mockup Box -->
-            <div class="relative h-56 sm:h-64 bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-700/50 flex items-center justify-center overflow-hidden">
+            <!-- Studio Photography Mockup Box (Square 1:1 Aspect Ratio) -->
+            <div class="relative aspect-square w-full bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-b border-slate-700/50 flex items-center justify-center overflow-hidden">
               
               <!-- Soft studio ambient lighting -->
               <div class="absolute inset-0 bg-radial from-cyan-500/8 via-transparent to-transparent opacity-30 group-hover:opacity-70 transition-opacity duration-500"></div>
@@ -210,15 +255,57 @@ const getOrderLink = (product) => {
               <!-- Floor shadow pedestal -->
               <div class="absolute bottom-5 w-36 sm:w-44 h-7 sm:h-8 bg-black/50 rounded-full blur-md"></div>
 
-              <!-- Vector Studio Illustrations with Depth & Warmth -->
-              
               <!-- Real photo if uploaded, otherwise procedural SVG -->
-              <img 
-                v-if="product.image_url" 
-                :src="product.image_url" 
-                :alt="product.name" 
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+              <template v-if="getActiveImage(product)">
+                <img 
+                  :src="getActiveImage(product)" 
+                  :alt="product.name" 
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+
+                <!-- Multi-image Arrows Navigation (if product has > 1 image) -->
+                <div 
+                  v-if="getProductImages(product).length > 1" 
+                  class="absolute inset-y-0 inset-x-2 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                >
+                  <button 
+                    type="button" 
+                    @click.stop="prevImage(product, $event)"
+                    class="p-1.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white pointer-events-auto border border-slate-700/60 shadow-lg cursor-pointer active:scale-95 transition-all"
+                    aria-label="Foto anterior"
+                  >
+                    <ChevronLeft class="w-4 h-4" />
+                  </button>
+                  <button 
+                    type="button" 
+                    @click.stop="nextImage(product, $event)"
+                    class="p-1.5 rounded-full bg-slate-900/80 hover:bg-slate-900 text-white pointer-events-auto border border-slate-700/60 shadow-lg cursor-pointer active:scale-95 transition-all"
+                    aria-label="Próxima foto"
+                  >
+                    <ChevronRight class="w-4 h-4" />
+                  </button>
+                </div>
+
+                <!-- Multi-image Dot Indicators -->
+                <div 
+                  v-if="getProductImages(product).length > 1" 
+                  class="absolute bottom-2.5 inset-x-0 flex items-center justify-center gap-1.5 pointer-events-none z-10"
+                >
+                  <button 
+                    v-for="(_, dotIdx) in getProductImages(product)" 
+                    :key="dotIdx"
+                    type="button"
+                    @click.stop="setImageIndex(product, dotIdx, $event)"
+                    class="h-1.5 rounded-full transition-all pointer-events-auto cursor-pointer"
+                    :class="[
+                      (activeImageIndices[product.id] || 0) === dotIdx 
+                        ? 'w-4 bg-cyan-400 shadow-sm shadow-cyan-400/50' 
+                        : 'w-1.5 bg-slate-400/60 hover:bg-white'
+                    ]"
+                    :aria-label="'Ver foto ' + (dotIdx + 1)"
+                  ></button>
+                </div>
+              </template>
 
               <!-- 1. Vaso Escultural Helix -->
               <svg v-else-if="product.svgType === 'vase'" viewBox="0 0 200 200" class="w-36 h-36 sm:w-44 sm:h-44 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-108">
@@ -460,10 +547,33 @@ const getOrderLink = (product) => {
                 {{ product.name }}
               </h3>
 
-              <!-- Humanized Benefit/Feeling Description -->
-              <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-3 sm:mb-4">
-                {{ product.description }}
+              <!-- Humanized Benefit/Feeling Short Description (Clean & Aligned) -->
+              <p class="text-xs sm:text-sm text-slate-400 leading-relaxed mb-3 line-clamp-2 min-h-[2.5rem]">
+                {{ product.short_description || product.description }}
               </p>
+
+              <!-- Discrete Physical Specs Tags (Altura & Peso) -->
+              <div 
+                v-if="product.height || product.weight || product.specs?.dimensions || product.specs?.weight" 
+                class="flex flex-wrap items-center gap-1.5 mb-3 text-[11px] font-['JetBrains_Mono']"
+              >
+                <span 
+                  v-if="product.height || product.specs?.dimensions" 
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-900/80 text-slate-300 border border-slate-700/50"
+                  title="Altura / Dimensões"
+                >
+                  <Ruler class="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span>{{ product.height ? (product.height.includes('cm') ? product.height : product.height + ' cm') : product.specs?.dimensions }}</span>
+                </span>
+                <span 
+                  v-if="product.weight || product.specs?.weight" 
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-900/80 text-slate-300 border border-slate-700/50"
+                  title="Peso Estimado"
+                >
+                  <Weight class="w-3 h-3 text-cyan-400 shrink-0" />
+                  <span>{{ product.weight ? (product.weight.includes('g') ? product.weight : product.weight + ' g') : product.specs?.weight }}</span>
+                </span>
+              </div>
 
               <!-- Sensory & Practical Highlights -->
               <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
