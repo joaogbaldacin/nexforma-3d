@@ -542,8 +542,12 @@ const getOrderLink = (product) => {
             <!-- Card Body (Clean & Welcoming E-Commerce Style) -->
             <div class="p-4 sm:p-6 pb-2">
               
-              <!-- Product Title -->
-              <h3 class="text-lg sm:text-xl font-bold font-['Space_Grotesk'] text-white mb-1.5 sm:mb-2 group-hover:text-cyan-400 transition-colors leading-snug">
+              <!-- Product Title (Clickable) -->
+              <h3 
+                @click="openSpecs(product)"
+                class="text-lg sm:text-xl font-bold font-['Space_Grotesk'] text-white mb-1.5 sm:mb-2 group-hover:text-cyan-400 transition-colors leading-snug cursor-pointer"
+                title="Clique para ver mais informações"
+              >
                 {{ product.name }}
               </h3>
 
@@ -633,26 +637,28 @@ const getOrderLink = (product) => {
                 </span>
               </div>
 
-              <!-- Button 1: Mais Especificações (Secondary Discreet Action) -->
-              <button
-                type="button"
-                @click="openSpecs(product)"
-                class="w-full py-2.5 px-4 rounded-xl bg-slate-900/70 hover:bg-slate-900 border border-slate-700/40 hover:border-cyan-400/50 text-xs font-semibold text-slate-400 hover:text-cyan-400 flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer group/btn min-h-[44px] active:scale-98"
-              >
-                <Info class="w-4 h-4 text-cyan-400 transition-transform duration-200 group-hover/btn:scale-110 shrink-0" />
-                <span>Mais especificações</span>
-              </button>
+              <!-- Actions: Mais informações + Pedir -->
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <button
+                  type="button"
+                  @click="openSpecs(product)"
+                  class="py-2.5 px-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-900 border border-slate-700/50 hover:border-cyan-400/50 text-xs font-semibold text-slate-300 hover:text-cyan-400 flex items-center justify-center gap-1.5 transition-all duration-200 cursor-pointer min-h-[42px] active:scale-95 group/info"
+                  title="Ver detalhes completos, galeria e especificações"
+                >
+                  <Info class="w-3.5 h-3.5 text-cyan-400 transition-transform group-hover/info:scale-110 shrink-0" />
+                  <span>Mais informações</span>
+                </button>
 
-              <!-- Button 2: Encomendar pelo WhatsApp (Primary CTA) -->
-              <a 
-                :href="getProductWhatsAppUrl(product)"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-cyan-500/25 active:scale-98 cursor-pointer min-h-[48px]"
-              >
-                <MessageSquare class="w-4 h-4 fill-current shrink-0" />
-                <span>Encomendar pelo WhatsApp 💬</span>
-              </a>
+                <a 
+                  :href="getProductWhatsAppUrl(product)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all duration-300 shadow-md hover:shadow-cyan-500/25 active:scale-95 cursor-pointer min-h-[42px]"
+                >
+                  <MessageSquare class="w-3.5 h-3.5 fill-current shrink-0" />
+                  <span>Pedir</span>
+                </a>
+              </div>
 
             </div>
           </div>

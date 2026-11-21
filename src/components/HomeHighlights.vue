@@ -20,13 +20,28 @@ import {
   ChevronLeft,
   ChevronRight,
   Ruler,
-  Weight
+  Weight,
+  Info
 } from 'lucide-vue-next'
+import ProductSpecsModal from './ProductSpecsModal.vue'
 
 const emit = defineEmits(['open-quote', 'navigate'])
 
 // Dynamic products from Supabase with fallback
 const { featuredProducts } = useProducts()
+
+// Modal state for product details
+const selectedProduct = ref(null)
+const isSpecsModalOpen = ref(false)
+
+const openSpecs = (product) => {
+  selectedProduct.value = product
+  isSpecsModalOpen.value = true
+}
+
+const closeSpecs = () => {
+  isSpecsModalOpen.value = false
+}
 
 // 1. Social Proof Bar
 const proofMetrics = [
@@ -329,7 +344,12 @@ const getOrderLink = (product) => {
 
             <!-- Card Body -->
             <div class="p-5 sm:p-6 pb-2 space-y-2.5">
-              <h3 class="text-lg font-bold font-['Space_Grotesk'] text-white group-hover:text-cyan-400 transition-colors">
+              <!-- Product Title (Clickable) -->
+              <h3 
+                @click="openSpecs(item)"
+                class="text-lg font-bold font-['Space_Grotesk'] text-white group-hover:text-cyan-400 transition-colors cursor-pointer"
+                title="Clique para ver mais informações"
+              >
                 {{ item.name }}
               </h3>
               <p class="text-xs text-slate-400 leading-relaxed line-clamp-2 min-h-[2.5rem]">
@@ -370,9 +390,9 @@ const getOrderLink = (product) => {
             </div>
           </div>
 
-          <!-- Card Footer -->
+          <!-- Card Footer: Price & Action Buttons -->
           <div class="p-5 sm:p-6 pt-3">
-            <div class="pt-3 border-t border-slate-700/40 flex items-center justify-between gap-3">
+            <div class="pt-3 border-t border-slate-700/40 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
               <div>
                 <span class="text-[10px] text-slate-400 uppercase font-['Space_Grotesk'] block">
                   {{ item.pricePrefix }}
@@ -381,15 +401,28 @@ const getOrderLink = (product) => {
                   {{ item.priceValue }}
                 </span>
               </div>
-              <a 
-                :href="getProductWhatsAppUrl(item)"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-semibold text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer min-h-[38px] active:scale-95"
-              >
-                <MessageSquare class="w-3.5 h-3.5 fill-current" />
-                <span>Pedir</span>
-              </a>
+              
+              <div class="grid grid-cols-2 sm:flex sm:items-center gap-2">
+                <button 
+                  type="button"
+                  @click="openSpecs(item)"
+                  class="py-2 px-3 rounded-xl bg-slate-900/80 hover:bg-slate-900 border border-slate-700/50 hover:border-cyan-400/50 text-slate-300 hover:text-cyan-400 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer min-h-[38px] active:scale-95 group/info"
+                  title="Ver especificações e galeria de fotos"
+                >
+                  <Info class="w-3.5 h-3.5 text-cyan-400 transition-transform group-hover/info:scale-110 shrink-0" />
+                  <span>Mais informações</span>
+                </button>
+
+                <a 
+                  :href="getProductWhatsAppUrl(item)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="py-2 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-sky-500 hover:from-cyan-400 hover:to-sky-400 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer min-h-[38px] active:scale-95"
+                >
+                  <MessageSquare class="w-3.5 h-3.5 fill-current shrink-0" />
+                  <span>Pedir</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -534,6 +567,13 @@ const getOrderLink = (product) => {
         </div>
       </div>
     </section>
+
+    <!-- Modal de Especificações e Galeria Completa do Produto -->
+    <ProductSpecsModal 
+      :is-open="isSpecsModalOpen" 
+      :product="selectedProduct" 
+      @close="closeSpecs" 
+    />
 
   </div>
 </template>
