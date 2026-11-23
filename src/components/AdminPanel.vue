@@ -720,7 +720,8 @@ const savePrice = async (id) => {
                   <input 
                     v-model="tempPrice" 
                     type="number" 
-                    step="0.5" 
+                    step="0.01"
+                    min="0"
                     class="w-16 px-1.5 py-1 text-xs bg-slate-900 rounded border border-cyan-400 text-white text-right"
                   />
                   <button @click="savePrice(p.id)" class="p-1 text-emerald-400 hover:text-emerald-300">
@@ -833,8 +834,9 @@ const savePrice = async (id) => {
               <input 
                 v-model="form.price"
                 type="number"
-                step="0.5"
-                placeholder="79.00"
+                step="0.01"
+                min="0"
+                placeholder="79.90"
                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
               />
             </div>
