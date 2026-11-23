@@ -156,8 +156,9 @@ export const INITIAL_FALLBACK_PRODUCTS = [
   {
     id: 7,
     name: 'Placa Decorativa Letreiro 3D Personalizado',
-    category: 'presentes',
-    categoryLabel: 'Presentes & Colecionáveis',
+    category: 'personalizados',
+    categories: ['personalizados', 'presentes', 'decoracao'],
+    categoryLabel: 'Personalizados',
     badge: 'Feito sob medida',
     description: 'Nome, logotipo ou frase especial esculpida em relevo tridimensional. Ideal para presentear alguém especial, decorar quartos ou destacar a identidade da sua mesa de trabalho.',
     highlight: 'Relevo 3D de alta definição',
@@ -252,6 +253,118 @@ export const INITIAL_FALLBACK_PRODUCTS = [
       colors: ['Preto Ônix', 'Prata Metálico', 'Cobre', 'Branco Gelo'],
       notes: 'Disponível em diversos temas (animais geométricos, bustos ou formas abstratas sob medida).'
     }
+  },
+  {
+    id: 11,
+    name: 'Porta-Vela Túmulo Vazio de Jesus com Anjo 3D',
+    category: 'religiosos',
+    categories: ['religiosos', 'decoracao', 'presentes'],
+    categoryLabel: 'Religiosos',
+    badge: 'Exclusivo',
+    description: 'Peça sacra com representação tridimensional do Túmulo Vazio e Anjo do Senhor. Compartimento para vela de LED (inclusa), proporcionando iluminação suave e contemplativa para momentos de oração e reflexão.',
+    highlight: 'Vela LED inclusa',
+    materialHighlight: 'PLA Premium Marmorizado',
+    leadTimeBadge: 'Pronto em até 48h',
+    pricePrefix: 'A partir de',
+    priceValue: 'R$ 89,00',
+    price: 89.00,
+    stock: 4,
+    is_featured: true,
+    svgType: 'vase',
+    image_url: '',
+    height: '11 cm',
+    weight: '160 g',
+    specs: {
+      dimensions: '14 cm (Largura) x 11 cm (Altura) x 11 cm (Profundidade)',
+      weight: '160g',
+      materialAndFinish: 'PLA Marmorizado / Silk Dourado com acabamento de alta definição',
+      colors: ['Branco Mármore', 'Dourado Champanhe', 'Terracota Rústico'],
+      notes: 'Acompanha 1 vela eletrônica LED com bateria CR2032 de longa duração. Luz amarelada aconchegante que simula a chama real.'
+    }
+  },
+  {
+    id: 12,
+    name: 'Bandeja Porta-Vela Nossa Senhora Tricô 3D',
+    category: 'religiosos',
+    categories: ['religiosos', 'decoracao'],
+    categoryLabel: 'Religiosos',
+    badge: 'Artesanal 3D',
+    description: 'Design exclusivo com textura delicada em relevo estilo tricô/crochê tridimensional. Acomoda vela aromática ou vela LED, criando um ambiente de oração, serenidade e aconchego no lar.',
+    highlight: 'Textura relevo tricô 3D',
+    materialHighlight: 'PLA Silk Acetinado',
+    leadTimeBadge: 'Pronto em até 48h',
+    pricePrefix: 'A partir de',
+    priceValue: 'R$ 75,00',
+    price: 75.00,
+    stock: 5,
+    is_featured: false,
+    svgType: 'vase',
+    image_url: '',
+    height: '12 cm',
+    weight: '145 g',
+    specs: {
+      dimensions: '15 cm (Comprimento) x 12 cm (Altura) x 10 cm (Largura)',
+      weight: '145g',
+      materialAndFinish: 'PLA Silk Acetinado Toque Suave de alta densidade',
+      colors: ['Branco Perolado', 'Azul Celeste Mariano', 'Dourado Suave'],
+      notes: 'Compatível com velas aromáticas e velas eletrônicas LED. Não aquece a base de apoio.'
+    }
+  },
+  {
+    id: 13,
+    name: 'Bandeja Porta-Terço Nossa Senhora 3D',
+    category: 'religiosos',
+    categories: ['religiosos', 'decoracao', 'presentes'],
+    categoryLabel: 'Religiosos',
+    badge: 'Devoção & Arte',
+    description: 'Bandeja decorativa e funcional esculpida para descanso e organização de terço e orações diárias. Linhas suaves com acabamento acetinado de alta resolução, ideal para oratório pessoal ou cabeceira.',
+    highlight: 'Espaço esculpido para terço',
+    materialHighlight: 'PLA Silk Perolado',
+    leadTimeBadge: 'Pronto em até 48h',
+    pricePrefix: 'A partir de',
+    priceValue: 'R$ 69,00',
+    price: 69.00,
+    stock: 6,
+    is_featured: true,
+    svgType: 'vase',
+    image_url: '',
+    height: '9,5 cm',
+    weight: '135 g',
+    specs: {
+      dimensions: '16 cm (Comprimento) x 14 cm (Largura) x 9,5 cm (Altura)',
+      weight: '135g',
+      materialAndFinish: 'PLA Silk Premium Toque Acetinado com detalhes em baixo relevo',
+      colors: ['Branco Pérola', 'Azul Real', 'Dourado Champanhe', 'Mármore Carrara'],
+      notes: 'Perfeito para presentear em batizados, crismas ou renovação de votos de fé.'
+    }
+  },
+  {
+    id: 14,
+    name: 'Chaveiro Personalizado Spotify Code & Nome 3D',
+    category: 'personalizados',
+    categories: ['personalizados', 'presentes'],
+    categoryLabel: 'Personalizados',
+    badge: 'Personalizado',
+    description: 'Chaveiro gravado em alto relevo com o código escaneável da sua música favorita no Spotify de um lado e seu nome ou data especial gravados do outro lado.',
+    highlight: 'Código escaneável real',
+    materialHighlight: 'PLA Bicolor Premium',
+    leadTimeBadge: 'Pronto em até 24h',
+    pricePrefix: 'A partir de',
+    priceValue: 'R$ 25,00',
+    price: 25.00,
+    stock: 12,
+    is_featured: false,
+    svgType: 'signboard',
+    image_url: '',
+    height: '6,5 cm',
+    weight: '18 g',
+    specs: {
+      dimensions: '6,5 cm (Comprimento) x 2,0 cm (Largura) x 0,5 cm (Espessura)',
+      weight: '18g',
+      materialAndFinish: 'PLA Bicolor de Alto Contraste com argola em aço niquelado inclusa',
+      colors: ['Preto / Branco', 'Preto / Ciano Neon', 'Azul Marinho / Dourado'],
+      notes: 'Personalização com qualquer música ou playlist do Spotify. Acompanha argola reforçada.'
+    }
   }
 ]
 
@@ -267,7 +380,47 @@ function normalizeProduct(item) {
     decoracao: 'Decoração & Design',
     presentes: 'Presentes & Colecionáveis',
     tecnicas: 'Peças Técnicas',
-    setup: 'Setup & Utilidades'
+    setup: 'Setup & Utilidades',
+    personalizados: 'Personalizados',
+    religiosos: 'Religiosos'
+  }
+
+  // Parse categories array / string
+  let cats = []
+  if (Array.isArray(item.categories)) {
+    cats = item.categories.map(c => String(c).trim().toLowerCase()).filter(Boolean)
+  } else if (typeof item.categories === 'string' && item.categories.trim()) {
+    try {
+      const parsed = JSON.parse(item.categories)
+      if (Array.isArray(parsed)) {
+        cats = parsed.map(c => String(c).trim().toLowerCase()).filter(Boolean)
+      } else {
+        cats = item.categories.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+      }
+    } catch {
+      cats = item.categories.split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+    }
+  }
+
+  const primaryCategory = (item.category || (cats[0] || 'decoracao')).toLowerCase().trim()
+  if (primaryCategory && !cats.includes(primaryCategory)) {
+    cats.unshift(primaryCategory)
+  }
+
+  const nameLower = (item.name || '').toLowerCase()
+  const descLower = ((item.description || '') + ' ' + (item.short_description || '') + ' ' + (item.material || '')).toLowerCase()
+  const combinedText = `${nameLower} ${descLower}`
+
+  // Automatic religious classification for items requested
+  const isReligious = /jesus|nossa senhora|túmulo|tumulo|anjo|terço|terco|porta-terço|porta-terco|porta-vela|presépio|presepio|sagrada|oratório|oratorio|religios/i.test(combinedText)
+  if (isReligious && !cats.includes('religiosos')) {
+    cats.push('religiosos')
+  }
+
+  // Automatic personalized classification for items requested
+  const isPersonalized = /chaveiro|personalizad|sob medida|spotify|letreiro|nome 3d/i.test(combinedText)
+  if (isPersonalized && !cats.includes('personalizados')) {
+    cats.push('personalizados')
   }
 
   const priceNum = typeof item.price === 'number' ? item.price : parseFloat(item.price) || 0
@@ -284,8 +437,9 @@ function normalizeProduct(item) {
   return {
     id: item.id,
     name: item.name || 'Produto sem nome',
-    category: item.category || 'decoracao',
-    categoryLabel: item.categoryLabel || categoryLabels[item.category] || 'Geral',
+    category: primaryCategory,
+    categories: cats,
+    categoryLabel: item.categoryLabel || categoryLabels[primaryCategory] || 'Geral',
     badge: item.badge || (item.is_featured ? 'Destaque' : 'Sob Medida'),
     short_description: item.short_description || (item.description ? (item.description.length > 120 ? item.description.slice(0, 120) + '...' : item.description) : ''),
     description: item.description || '',
@@ -433,6 +587,7 @@ export function useProducts() {
         const payload = {
           name: normalized.name,
           category: normalized.category,
+          categories: normalized.categories,
           short_description: normalized.short_description,
           description: normalized.description,
           height: normalized.height,
@@ -446,10 +601,19 @@ export function useProducts() {
           image_url: normalized.image_url
         }
 
-        const { data, error: err } = await supabase
+        let { data, error: err } = await supabase
           .from('products')
           .insert([payload])
           .select()
+
+        // Fallback retry if column 'categories' does not exist yet on Supabase table
+        if (err && (err.message?.includes('categories') || err.code === '42703')) {
+          const fallbackPayload = { ...payload }
+          delete fallbackPayload.categories
+          const retry = await supabase.from('products').insert([fallbackPayload]).select()
+          data = retry.data
+          err = retry.error
+        }
 
         if (!err && data && data[0]) {
           // Sync with database ID
@@ -479,6 +643,7 @@ export function useProducts() {
         const payload = {
           name: target.name,
           category: target.category,
+          categories: target.categories,
           short_description: target.short_description,
           description: target.description,
           height: target.height,
@@ -492,10 +657,17 @@ export function useProducts() {
           image_url: target.image_url
         }
 
-        await supabase
+        let { error: err } = await supabase
           .from('products')
           .update(payload)
           .eq('id', id)
+
+        // Fallback retry if column 'categories' does not exist yet on Supabase table
+        if (err && (err.message?.includes('categories') || err.code === '42703')) {
+          const fallbackPayload = { ...payload }
+          delete fallbackPayload.categories
+          await supabase.from('products').update(fallbackPayload).eq('id', id)
+        }
       } catch (e) {
         console.error('[Supabase] Falha ao atualizar produto:', e)
       }

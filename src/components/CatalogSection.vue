@@ -100,22 +100,31 @@ const categories = [
   { id: 'presentes', label: 'Presentes & Colecionáveis' },
   { id: 'tecnicas', label: 'Peças Técnicas' },
   { id: 'setup', label: 'Setup & Utilidades' },
+  { id: 'personalizados', label: 'Personalizados' },
+  { id: 'religiosos', label: 'Religiosos' }
 ]
 
 const filteredProducts = computed(() => {
   let list = products.value
-  // Category filter
+  // Category filter with multi-category support
   if (selectedCategory.value !== 'todos') {
-    list = list.filter(p => p.category === selectedCategory.value)
+    const sel = selectedCategory.value.toLowerCase().trim()
+    list = list.filter(p => {
+      const mainCat = (p.category || '').toLowerCase().trim()
+      if (mainCat === sel) return true
+      if (Array.isArray(p.categories) && p.categories.some(c => (c || '').toLowerCase().trim() === sel)) return true
+      return false
+    })
   }
-  // Search filter (name, material, description keywords)
+  // Search filter (name, material, description keywords, categories)
   const q = searchQuery.value.trim().toLowerCase()
   if (q) {
     list = list.filter(p =>
       p.name.toLowerCase().includes(q) ||
       (p.materialHighlight || '').toLowerCase().includes(q) ||
       (p.description || '').toLowerCase().includes(q) ||
-      (p.specs?.materialAndFinish || '').toLowerCase().includes(q)
+      (p.specs?.materialAndFinish || '').toLowerCase().includes(q) ||
+      (Array.isArray(p.categories) && p.categories.some(c => (c || '').toLowerCase().includes(q)))
     )
   }
   return list

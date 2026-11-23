@@ -137,6 +137,47 @@ const isFormOpen = ref(false)
 const isEditing = ref(false)
 const editingId = ref(null)
 
+const availableCategories = [
+  { id: 'decoracao', label: 'Decoração & Design' },
+  { id: 'presentes', label: 'Presentes & Colecionáveis' },
+  { id: 'tecnicas', label: 'Peças Técnicas' },
+  { id: 'setup', label: 'Setup & Utilidades' },
+  { id: 'personalizados', label: 'Personalizados' },
+  { id: 'religiosos', label: 'Religiosos' }
+]
+
+const getCategoryLabel = (catId) => {
+  const found = availableCategories.find(c => c.id === catId)
+  return found ? found.label : (catId || 'Geral')
+}
+
+const toggleCategoryTag = (catId) => {
+  if (!Array.isArray(form.value.categories)) {
+    form.value.categories = [form.value.category || 'decoracao']
+  }
+  const idx = form.value.categories.indexOf(catId)
+  if (idx > -1) {
+    if (form.value.categories.length > 1) {
+      form.value.categories.splice(idx, 1)
+      if (form.value.category === catId) {
+        form.value.category = form.value.categories[0]
+      }
+    }
+  } else {
+    form.value.categories.push(catId)
+  }
+}
+
+const onCategoryChange = () => {
+  if (!Array.isArray(form.value.categories)) {
+    form.value.categories = [form.value.category || 'decoracao']
+    return
+  }
+  if (!form.value.categories.includes(form.value.category)) {
+    form.value.categories.push(form.value.category)
+  }
+}
+
 const fileInputRef = ref(null)
 const isDragging = ref(false)
 const uploadingImages = ref(false)
@@ -145,6 +186,7 @@ const uploadError = ref('')
 const form = ref({
   name: '',
   category: 'decoracao',
+  categories: ['decoracao'],
   short_description: '',
   description: '',
   height: '',
@@ -165,6 +207,7 @@ const openAddModal = () => {
   form.value = {
     name: '',
     category: 'decoracao',
+    categories: ['decoracao'],
     short_description: '',
     description: '',
     height: '',
@@ -189,9 +232,14 @@ const openEditModal = (product) => {
     ? [...product.images]
     : (product.image_url ? [product.image_url] : [])
 
+  const productCats = Array.isArray(product.categories) && product.categories.length > 0
+    ? [...product.categories]
+    : [product.category || 'decoracao']
+
   form.value = {
     name: product.name || '',
-    category: product.category || 'decoracao',
+    category: product.category || productCats[0] || 'decoracao',
+    categories: productCats,
     short_description: product.short_description || '',
     description: product.description || '',
     height: product.height || '',
@@ -314,10 +362,17 @@ const setCoverImage = (index) => {
 const handleSaveProduct = async () => {
   if (!form.value.name.trim()) return
 
+  // Ensure main category is included in categories array
+  const cats = Array.isArray(form.value.categories) ? [...form.value.categories] : [form.value.category]
+  if (form.value.category && !cats.includes(form.value.category)) {
+    cats.unshift(form.value.category)
+  }
+
   const coverImage = form.value.images[0] || form.value.image_url || ''
   const payload = {
     name: form.value.name.trim(),
     category: form.value.category,
+    categories: cats,
     short_description: form.value.short_description?.trim() || '',
     description: form.value.description?.trim() || '',
     height: form.value.height?.trim() || '',
@@ -596,9 +651,20 @@ const savePrice = async (id) => {
                   <h4 class="font-bold text-sm sm:text-base text-white">
                     {{ p.name }}
                   </h4>
-                  <span class="px-2 py-0.5 rounded text-[10px] bg-slate-900 text-slate-400 border border-slate-700/50">
-                    {{ p.categoryLabel || p.category }}
-                  </span>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span 
+                      v-for="cat in (p.categories && p.categories.length > 0 ? p.categories : [p.category])"
+                      :key="cat"
+                      class="px-2 py-0.5 rounded text-[10px] border"
+                      :class="cat === 'religiosos' 
+                        ? 'bg-amber-500/15 text-amber-300 border-amber-500/40' 
+                        : cat === 'personalizados'
+                          ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40'
+                          : 'bg-slate-900 text-slate-400 border-slate-700/50'"
+                    >
+                      {{ getCategoryLabel(cat) }}
+                    </span>
+                  </div>
                 </div>
                 <p class="text-xs text-slate-400 line-clamp-1 max-w-md">
                   {{ p.description }}
@@ -744,16 +810,19 @@ const savePrice = async (id) => {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs font-semibold text-slate-300 uppercase mb-1 font-['JetBrains_Mono']">
-                Categoria
+                Categoria Principal
               </label>
               <select 
                 v-model="form.category"
+                @change="onCategoryChange"
                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
               >
                 <option value="decoracao">Decoração & Design</option>
                 <option value="presentes">Presentes & Colecionáveis</option>
                 <option value="tecnicas">Peças Técnicas</option>
                 <option value="setup">Setup & Utilidades</option>
+                <option value="personalizados">Personalizados</option>
+                <option value="religiosos">Religiosos</option>
               </select>
             </div>
 
@@ -769,6 +838,34 @@ const savePrice = async (id) => {
                 class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700/50 text-sm text-white focus:outline-none focus:border-cyan-400"
               />
             </div>
+          </div>
+
+          <!-- Multi-Category / Tags Selector -->
+          <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-700/50 space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-semibold text-slate-300 uppercase font-['JetBrains_Mono']">
+                Filtros do Catálogo (Selecione todos onde o produto deve aparecer)
+              </label>
+              <span class="text-[10px] text-cyan-400 font-['JetBrains_Mono']">Múltiplas categorias</span>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+              <button
+                v-for="catOption in availableCategories"
+                :key="catOption.id"
+                type="button"
+                @click="toggleCategoryTag(catOption.id)"
+                class="px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer select-none"
+                :class="form.categories && form.categories.includes(catOption.id)
+                  ? 'bg-cyan-500 text-white font-bold border-cyan-400 shadow-sm shadow-cyan-500/25'
+                  : 'bg-slate-800/80 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-500'"
+              >
+                <span class="mr-1 text-[11px]">{{ form.categories && form.categories.includes(catOption.id) ? '✓' : '+' }}</span>
+                {{ catOption.label }}
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-500">
+              Permite que peças sacras apareçam simultaneamente em "Religiosos" e "Decoração", ou chaveiros em "Personalizados" e "Presentes".
+            </p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
